@@ -20,9 +20,13 @@
             id="iteration-count"
             min="1"
             max="20"
+            step="1"
             v-model.number="iterationCount"
+            :class="{ 'input-error': hasError }"
+            @input="validateInput"
         >
-        <button class="btn btn-start" @click="startGame">開始遊戲</button>
+        <p v-if="hasError" class="error-message">{{ errorMessage }}</p>
+        <button class="btn btn-start" @click="startGame" :disabled="hasError">開始遊戲</button>
       </div>
       <button class="btn btn-back" @click="backToMain">← 返回選單</button>
     </div>
@@ -30,8 +34,8 @@
 </template>
 
 <script setup lang="ts">
-import { ref, inject } from 'vue'
-import { TransformUtils } from '../utils/transform-utils'
+import {ref, inject, watch} from 'vue'
+import { TransformUtils, TransformResult } from '../utils/transform-utils'
 import { difficulties, difficultyClasses } from "@/utils/constants.ts";
 
 interface GameData {
@@ -50,8 +54,10 @@ const emit = defineEmits<{
 const navigateTo = inject<(screen: string) => void>('navigateTo')
 
 const difficulty = ref(1)
-const iterationCount = ref(5)
+const iterationCount = ref(3)
 const showIterationInput = ref(false)
+const hasError = ref(false)
+const errorMessage = ref('')
 
 const getDifficultyClass = (level: number): string => {
   return difficultyClasses[level] || ''
@@ -60,6 +66,22 @@ const getDifficultyClass = (level: number): string => {
 const selectDifficulty = (level: number) => {
   difficulty.value = level
   showIterationInput.value = true
+  hasError.value = false
+  errorMessage.value = ''
+}
+
+const validateInput = () => {
+  if (!Number.isInteger(iterationCount.value)){
+    hasError.value = true
+    errorMessage.value = '變換次數必須是整數'
+  }
+  else if (iterationCount.value < 1 || iterationCount.value > 20) {
+    hasError.value = true
+    errorMessage.value = '請輸入 1 到 20 之間的數字'
+  } else {
+    hasError.value = false
+    errorMessage.value = ''
+  }
 }
 
 const startGame = () => {
@@ -98,7 +120,7 @@ const startGame = () => {
       currentFunction = null
     }
 
-    let result
+    let result: TransformResult
     if (target.argGen === null) {
       result = target.func(currentX, currentY)
     } else {
@@ -128,6 +150,10 @@ const backToMain = () => {
   difficulty.value = 1
   navigateTo?.('MainMenu')
 }
+
+watch(iterationCount, () => {
+  console.log('iterationCount changed to ', iterationCount.value)
+})
 </script>
 
 <style scoped>
@@ -197,6 +223,12 @@ const backToMain = () => {
   width: 100%;
 }
 
+.btn-start:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
 .btn-back {
   background: linear-gradient(135deg, #95a5a6, #bdc3c7);
   color: white;
@@ -223,5 +255,17 @@ const backToMain = () => {
   font-size: 1rem;
   text-align: center;
   margin-bottom: 15px;
+}
+
+#iteration-count.input-error {
+  border-color: #f5576c;
+  background-color: #fff5f5;
+}
+
+.error-message {
+  color: #f5576c;
+  font-size: 0.9rem;
+  margin-top: 5px;
+  margin-bottom: 10px;
 }
 </style>
