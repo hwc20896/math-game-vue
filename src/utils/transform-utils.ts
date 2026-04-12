@@ -51,7 +51,10 @@ export interface TutorialData {
 export namespace TransformUtils {
 
     /**
-     * 四捨五入到指定小數位數
+     * Rounds a number to a specified number of decimal places.
+     * @param num - The number to round
+     * @param decimals - Number of decimal places (default: 2)
+     * @returns The rounded number
      */
     export function roundToDecimal(num: number, decimals: number = 2): number {
         const factor = Math.pow(10, decimals);
@@ -59,21 +62,30 @@ export namespace TransformUtils {
     }
 
     /**
-     * 隨機整數
+     * Generates a random integer between min and max (inclusive).
+     * @param min - Minimum value (inclusive)
+     * @param max - Maximum value (inclusive)
+     * @returns A random integer in the range [min, max]
      */
     export function randInt(min: number, max: number): number {
         return Math.floor(Math.random() * (max - min + 1)) + min;
     }
 
     /**
-     * 從陣列中隨機選擇
+     * Randomly selects an element from an array.
+     * @param array - The array to choose from
+     * @returns A randomly selected element
+     * @throws Error if array is empty
      */
     export function choice<T>(array: T[]): T {
         return array[Math.floor(Math.random() * array.length)];
     }
 
     /**
-     * 平移變換
+     * Performs a translation transformation on a point.
+     * @param current - The current point position
+     * @param other - The translation vector
+     * @returns TransformResult with new position and description
      */
     export function moveCoord(current: Point, other: Point): TransformResult {
         return {
@@ -83,7 +95,10 @@ export namespace TransformUtils {
     }
 
     /**
-     * 縮放變換
+     * Performs a scaling transformation on a point from the origin.
+     * @param current - The current point position
+     * @param factor - The scaling factor
+     * @returns TransformResult with scaled position and description
      */
     export function scaleCoord(current: Point, factor: number): TransformResult {
         return {
@@ -93,7 +108,10 @@ export namespace TransformUtils {
     }
 
     /**
-     * 旋轉變換（繞原點）
+     * Performs a rotation transformation around the origin (0, 0).
+     * @param current - The current point position
+     * @param angleDegrees - The rotation angle in degrees
+     * @returns TransformResult with rotated position and description
      */
     export function rotateCoord(current: Point, angleDegrees: number): TransformResult {
         return {
@@ -103,7 +121,9 @@ export namespace TransformUtils {
     }
 
     /**
-     * X 軸反射
+     * Reflects a point across the X-axis.
+     * @param current - The current point position
+     * @returns TransformResult with reflected position and description
      */
     export function reflectByXAxis(current: Point): TransformResult {
         const xAxis: Line = new Line(1, 0, 0);
@@ -114,7 +134,9 @@ export namespace TransformUtils {
     }
 
     /**
-     * Y 軸反射
+     * Reflects a point across the Y-axis.
+     * @param current - The current point position
+     * @returns TransformResult with reflected position and description
      */
     export function reflectByYAxis(current: Point): TransformResult {
         const yAxis: Line = new Line(0, 1, 0);
@@ -125,7 +147,11 @@ export namespace TransformUtils {
     }
 
     /**
-     * 繞點旋轉
+     * Rotates a point around a specified origin point.
+     * @param current - The current point position
+     * @param origin - The center of rotation
+     * @param angle - The rotation angle in degrees
+     * @returns TransformResult with rotated position and description
      */
     export function rotateCoordByPoint(
         current: Point,
@@ -139,7 +165,9 @@ export namespace TransformUtils {
     }
 
     /**
-     * y=x 直線反射
+     * Reflects a point across the line y=x (45-degree line).
+     * @param current - The current point position
+     * @returns TransformResult with reflected position and description
      */
     export function reflectBy45DegLine(current: Point): TransformResult {
         //  y=x ==> x-y=0
@@ -151,7 +179,9 @@ export namespace TransformUtils {
     }
 
     /**
-     * y=-x 直線反射
+     * Reflects a point across the line y=-x (135-degree line).
+     * @param current - The current point position
+     * @returns TransformResult with reflected position and description
      */
     export function reflectBy135DegLine(current: Point): TransformResult {
         //  y=-x ==> x+y=0
@@ -163,7 +193,11 @@ export namespace TransformUtils {
     }
 
     /**
-     * 一般直線反射
+     * Reflects a point across an arbitrary line.
+     * @param current - The current point position
+     * @param line - The line to reflect across
+     * @returns TransformResult with reflected position and description,
+     *          or unchanged point if the line is invalid
      */
     export function reflectByLine(
         current: Point,
@@ -172,7 +206,7 @@ export namespace TransformUtils {
         if (!line.isValid) {
             return {
                 point: current,
-                description: `無效直線（无反射）`
+                description: `無效直線（無反射）`
             };
         }
 
