@@ -22,11 +22,11 @@
             max="20"
             step="1"
             v-model.number="iterationCount"
-            :class="{ 'input-error': hasError }"
+            :class="{ 'input-error': errorMessage !== '' }"
             @input="validateInput"
         >
-        <p v-if="hasError" class="error-message">{{ errorMessage }}</p>
-        <button class="btn btn-start" @click="startGame" :disabled="hasError">開始遊戲</button>
+        <p v-if="errorMessage !== ''" class="error-message">{{ errorMessage }}</p>
+        <button class="btn btn-start" @click="startGame" :disabled="errorMessage !== ''">開始遊戲</button>
       </div>
       <button class="btn btn-back" @click="backToMain">← 返回選單</button>
     </div>
@@ -35,8 +35,8 @@
 
 <script setup lang="ts">
 import {ref, inject, watch} from 'vue'
-import { TransformUtils, TransformResult } from '../utils/transform-utils'
-import { difficulties, difficultyClasses } from "@/utils/constants.ts";
+import { TransformUtils, TransformResult } from '@/utils/transform-utils'
+import { difficulties, difficultyClasses, OPTIONS_DIFFICULTY } from "@/utils/constants.ts";
 import { Point } from '@/utils/point.ts'
 
 interface GameData {
@@ -57,7 +57,6 @@ const navigateTo = inject<(screen: string) => void>('navigateTo')
 const difficulty = ref(1)
 const iterationCount = ref(3)
 const showIterationInput = ref(false)
-const hasError = ref(false)
 const errorMessage = ref('')
 
 const getDifficultyClass = (level: number): string => {
@@ -67,20 +66,16 @@ const getDifficultyClass = (level: number): string => {
 const selectDifficulty = (level: number) => {
   difficulty.value = level
   showIterationInput.value = true
-  hasError.value = false
   errorMessage.value = ''
 }
 
 const validateInput = () => {
   if (!Number.isInteger(iterationCount.value)){
-    hasError.value = true
     errorMessage.value = '變換次數必須是整數'
   }
   else if (iterationCount.value < 1 || iterationCount.value > 20) {
-    hasError.value = true
     errorMessage.value = '請輸入 1 到 20 之間的數字'
   } else {
-    hasError.value = false
     errorMessage.value = ''
   }
 }
