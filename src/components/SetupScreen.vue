@@ -93,7 +93,7 @@ const startGame = () => {
   let currentY = originalY
   const transformations: string[] = []
 
-  const options = TransformUtils.OPTIONS_DIFFICULTY[difficulty.value]
+  const options = OPTIONS_DIFFICULTY[difficulty.value]
   let currentFunction: string | null = null
   const PROHIBIT_CONTINUOUS_FUNCTION = ['reflectByXAxis', 'reflectByYAxis', 'reflectBy45DegLine', 'reflectBy135DegLine']
 
@@ -181,7 +181,6 @@ watch(iterationCount, () => {
   font-weight: bold;
   cursor: pointer;
   transition: all 0.3s ease;
-  opacity: 0.6;
 }
 
 .btn:hover {
@@ -191,26 +190,30 @@ watch(iterationCount, () => {
 
 .btn.selected {
   opacity: 1;
-  transform: scale(1.05);
+  transform: scale(1.07);
 }
 
 .btn-normal {
   background: linear-gradient(135deg, #667eea, #764ba2);
+  opacity: 0.5;
   color: white;
 }
 
 .btn-hard {
   background: linear-gradient(135deg, #f093fb, #f5576c);
+  opacity: 0.5;
   color: white;
 }
 
 .btn-hell {
   background: linear-gradient(135deg, #4facfe, #00f2fe);
+  opacity: 0.5;
   color: white;
 }
 
 .btn-extreme {
   background: linear-gradient(135deg, #fa709a, #fee140);
+  opacity: 0.5;
   color: white;
 }
 
@@ -219,10 +222,11 @@ watch(iterationCount, () => {
   color: white;
   margin-top: 20px;
   width: 100%;
+  opacity: 1;
 }
 
 .btn-start:disabled {
-  opacity: 0.5;
+  opacity: 0.3;
   cursor: not-allowed;
   transform: none;
 }

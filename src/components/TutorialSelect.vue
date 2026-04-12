@@ -102,6 +102,11 @@ const backToMain = () => {
   font-size: 0.9rem;
 }
 
+.lesson-card.basic {
+  border-color: #66ea7e;
+  background: linear-gradient(135deg, #eefff2, #ffffff);
+}
+
 .lesson-card.advanced {
   border-color: #f5576c;
   background: linear-gradient(135deg, #fff5f5, #ffffff);
