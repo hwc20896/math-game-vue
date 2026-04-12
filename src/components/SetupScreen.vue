@@ -37,6 +37,7 @@
 import {ref, inject, watch} from 'vue'
 import { TransformUtils, TransformResult } from '../utils/transform-utils'
 import { difficulties, difficultyClasses } from "@/utils/constants.ts";
+import { Point } from '@/utils/point.ts'
 
 interface GameData {
   originalX: number
@@ -121,15 +122,17 @@ const startGame = () => {
     }
 
     let result: TransformResult
+    const currentPoint = new Point(currentX, currentY)
+
     if (target.argGen === null) {
-      result = target.func(currentX, currentY)
+      result = target.func(currentPoint)
     } else {
       const args = target.argGen()
-      result = target.func(currentX, currentY, ...args)
+      result = target.func(currentPoint, ...args)
     }
 
-    currentX = TransformUtils.roundToDecimal(result.x, 2)
-    currentY = TransformUtils.roundToDecimal(result.y, 2)
+    currentX = TransformUtils.roundToDecimal(result.point.x, 2)
+    currentY = TransformUtils.roundToDecimal(result.point.y, 2)
     transformations.push(result.description)
   }
 

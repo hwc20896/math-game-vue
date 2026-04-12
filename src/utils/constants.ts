@@ -1,4 +1,5 @@
-import {type TutorialData} from "@/utils/transform-utils.ts";
+import {TransformResult, type TutorialData, TransformUtils, type TransformOption} from "@/utils/transform-utils.ts";
+import {Line, Point} from "@/utils/point.ts";
 
 interface Lesson {
     id: string
@@ -7,6 +8,71 @@ interface Lesson {
     description: string
     level: 'basic' | 'advanced' | 'expert'
 }
+
+export const VALID_ROTATE_ANGLES = [-90, 90, 180];
+export const VALID_ROTATE_ANGLES_HARD = [
+    -150, -135, -120, -90, -60, -45, -30,
+    30, 45, 60, 90, 120, 135, 150, 180
+];
+
+
+function getValidRotateAngles(difficulty: number = 1): number[] {
+    return difficulty >= 2 ? VALID_ROTATE_ANGLES_HARD : VALID_ROTATE_ANGLES;
+}
+
+const {
+    moveCoord,
+    scaleCoord,
+    rotateCoord,
+    reflectByXAxis,
+    reflectByYAxis,
+    rotateCoordByPoint,
+    reflectBy45DegLine,
+    reflectBy135DegLine,
+    reflectByLine,
+    choice,
+    randInt,
+
+} = TransformUtils;
+
+// 難度選項
+export const OPTIONS_DIFFICULTY: Record<number, TransformOption[]> = {
+    1: [
+        { func: moveCoord, argGen: () => [Point.randomRange(10, -10)] },
+        { func: scaleCoord, argGen: () => [randInt(2, 5)] },
+        { func: rotateCoord, argGen: () => [choice(getValidRotateAngles(1))] },
+        { func: reflectByXAxis, argGen: null },
+        { func: reflectByYAxis, argGen: null }
+    ],
+    2: [
+        { func: moveCoord, argGen: () => [Point.randomRange(30, -30)] },
+        { func: scaleCoord, argGen: () => [randInt(2, 10)] },
+        { func: rotateCoord, argGen: () => [choice(getValidRotateAngles(2))] },
+        { func: reflectByXAxis, argGen: null },
+        { func: reflectByYAxis, argGen: null }
+    ],
+    3: [
+        { func: moveCoord, argGen: () => [Point.randomRange(50, -50)] },
+        { func: scaleCoord, argGen: () => [randInt(2, 20)] },
+        { func: rotateCoord, argGen: () => [choice(getValidRotateAngles(2))] },
+        { func: reflectByXAxis, argGen: null },
+        { func: reflectByYAxis, argGen: null },
+        { func: rotateCoordByPoint, argGen: () => [Point.randomRange(10, -10), choice(getValidRotateAngles(1))] },
+        { func: reflectBy45DegLine, argGen: null },
+        { func: reflectBy135DegLine, argGen: null }
+    ],
+    4: [
+        { func: moveCoord, argGen: () => [Point.random(60, -60)] },
+        { func: scaleCoord, argGen: () => [randInt(-20, 20)] },
+        { func: rotateCoord, argGen: () => [choice(getValidRotateAngles(2))] },
+        { func: reflectByXAxis, argGen: null },
+        { func: reflectByYAxis, argGen: null },
+        { func: rotateCoordByPoint, argGen: () => [Point.randomRange(10, -10), choice(getValidRotateAngles(2))] },
+        { func: reflectBy45DegLine, argGen: null },
+        { func: reflectBy135DegLine, argGen: null },
+        { func: reflectByLine, argGen: () => [Line.randomRange(10, -10)] }
+    ]
+};
 
 export const TUTORIAL_DATA: Record<string, TutorialData> = {
     move: {
@@ -212,7 +278,7 @@ export const latexFormulas: Record<string, string> = {
 
 
 export const lessons: Lesson[] = [
-    { id: 'move', title: '平移 (Translation)', icon: '↔️', description: '將坐標移動 (dx, dy)', level: 'basic' },
+    { id: 'move', title: '平移 (Translation)', icon: '↔️', description: '將坐標移動 (Δx, Δy)', level: 'basic' },
     { id: 'scale', title: '縮放 (Scaling)', icon: '📏', description: '放大或縮小坐標', level: 'basic' },
     { id: 'rotate', title: '旋轉 (Rotation)', icon: '🔄', description: '繞原點旋轉', level: 'basic' },
     { id: 'reflect_x', title: 'X 軸反射', icon: '🪞', description: '沿 X 軸翻轉', level: 'basic' },
