@@ -71,7 +71,9 @@ import KatexFormula from './KatexFormula.vue'
 import {latexFormulas, TUTORIAL_DATA} from "@/utils/constants.ts";
 import {CanvaDrawing} from '@/utils/canva-drawing';
 import katex from 'katex'
+import {Point, Line} from '@/utils/point.ts'
 import 'katex/dist/katex.min.css'
+import {TransformUtils} from "@/utils/transform-utils.ts";
 
 const navigateTo = inject<(screen: string) => void>('navigateTo')
 
@@ -152,7 +154,7 @@ const drawFrame = (frame: number) => {
   CanvaDrawing.drawGrid(ctx, canvasRef.value, range)
 
   const start = demoData.start
-  let current: { x: number; y: number }
+  let current: Point
 
   const cellSize = canvasRef.value.width / (range * 2)
 
@@ -172,18 +174,18 @@ const drawFrame = (frame: number) => {
     }
     case 'reflect':{
       const [axis] = demoData.params
-      const line = axis === 'x' ? {A: 0, B: 1, C: 0} : {A: 1, B: 0, C: 0}
+      const line = axis === 'x' ? new Line(0, 1, 0) : new Line(1, 0, 0)
       current = CanvaDrawing.handleReflect(ctx, canvasRef.value, start, line, frame, range, cellSize)
       break
     }
     case 'rotate_point': {
-      const [px, py, angle] = demoData.params
-      current = CanvaDrawing.handleRotate(ctx, canvasRef.value, start, frame, range, angle, cellSize, {x: px, y: py})
+      const [point, angle] = demoData.params
+      current = CanvaDrawing.handleRotate(ctx, canvasRef.value, start, frame, range, angle, cellSize, point)
       break
     }
     case 'reflect_line':{
-      const [A, B, C] = demoData.params
-      current = CanvaDrawing.handleReflect(ctx, canvasRef.value, start, {A, B, C}, frame, range, cellSize)
+      const [line] = demoData.params
+      current = CanvaDrawing.handleReflect(ctx, canvasRef.value, start, line, frame, range, cellSize)
       break
     }
     default:{
@@ -191,8 +193,10 @@ const drawFrame = (frame: number) => {
     }
   }
 
-  CanvaDrawing.detail.drawPoint(ctx, canvasRef.value, start.x, start.y, '#667eea', 'Start', range)
-  CanvaDrawing.detail.drawPoint(ctx, canvasRef.value, current.x, current.y, '#43e97b', 'Current', range, -25)
+  console.log(`Current is ${current.toString()}`)
+
+  CanvaDrawing.detail.drawPoint(ctx, canvasRef.value, start, '#667eea', 'Start', range)
+  CanvaDrawing.detail.drawPoint(ctx, canvasRef.value, current, '#43e97b', 'Current', range, new Point(10, -25))
 
   ctx.fillStyle = '#333'
   ctx.font = '14px Arial'
@@ -240,15 +244,15 @@ const checkPracticeAnswer = () => {
 
   const userX = parseFloat(match[1])
   const userY = parseFloat(match[3])
-  const [correctX, correctY] = tutorialData.value.practice.answer
+  const correct = tutorialData.value.practice.answer
 
-  const isCorrect = Math.abs(userX - correctX) < 0.01 && Math.abs(userY - correctY) < 0.01
+  const isCorrect = TransformUtils.isCorrect(correct, new Point(userX, userY))
 
   showFeedback.value = true
   feedbackIsCorrect.value = isCorrect
   feedbackMessage.value = isCorrect
       ? '✅ 正確！做得好！'
-      : `❌ 不太對。正確答案是 (${correctX}, ${correctY})`
+      : `❌ 不太對。正確答案是 ${correct.toString()}`
 }
 
 const backToLessons = () => {
@@ -279,6 +283,21 @@ onMounted(() => {
   flex: 1;
   color: #333;
   font-size: 1.8rem;
+}
+
+.btn {
+  padding: 15px 30px;
+  border: none;
+  border-radius: 10px;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
 }
 
 .btn-small {

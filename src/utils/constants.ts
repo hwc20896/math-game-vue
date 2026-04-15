@@ -1,4 +1,4 @@
-import {TransformResult, type TutorialData, TransformUtils, type TransformOption} from "@/utils/transform-utils.ts";
+import {type TutorialData, TransformUtils, type TransformOption} from "@/utils/transform-utils.ts";
 import {Line, Point} from "@/utils/point.ts";
 
 interface Lesson {
@@ -81,17 +81,17 @@ export const TUTORIAL_DATA: Record<string, TutorialData> = {
         formula: `(x, y) → (x + dx, y + dy)<br><br>範例：平移 (3, -2)<br>(5, 4) → (5+3, 4-2) = (8, 2)`,
         example: `<div class="example-step">從點 $(2, 3)$ 開始平移 $(4, -1)$：</div>
                   <div class="example-step"><strong>步驟 1：</strong> $x' = 2 + 4 = 6$<strong></div>
-                  <div class="example-step">步驟 2：</strong> $y' = 3 + (-1) = 2$</div>
+                  <div class="example-step"><strong>步驟 2：</strong> $y' = 3 + (-1) = 2$</div>
                   <div class="example-step"><strong>結果：</strong> $(x', y')=\\boxed{(6, 2)}$</div>`,
         practice: {
             question: "將點 (3, 5) 平移 (2, -3)。新的坐標是什麼？",
-            answer: [5, 2]
+            answer: new Point(5, 2)
         },
         demo: {
             type: 'move',
             text: "從 (2, 2) 平移 (3, 2)",
-            start: { x: 2, y: 2 },
-            params: [3, 2],
+            start: new Point(2, 2),
+            params: [new Point(3, 2)],
             gridRange: 10
         }
     },
@@ -106,12 +106,12 @@ export const TUTORIAL_DATA: Record<string, TutorialData> = {
                   <div class="example-step"><strong>結果：</strong> $(x', y')=\\boxed{(12, 9)}$</div>`,
         practice: {
             question: "將點 (5, 2) 放大至原來的 4 倍。新的坐標是什麼？",
-            answer: [20, 8]
+            answer: new Point(20, 8)
         },
         demo: {
             type: 'scale',
             text: "從 (2, 1.5) 放大 2 倍",
-            start: { x: 2, y: 1.5 },
+            start: new Point(2, 1.5),
             params: [2],
             gridRange: 10
         }
@@ -127,12 +127,12 @@ export const TUTORIAL_DATA: Record<string, TutorialData> = {
                   <div class="example-step"><strong>結果：</strong> $(x', y')=\\boxed{(-4, 3)}$</div>`,
         practice: {
             question: "將點 (4, 3) 逆時針旋轉 90°。新的坐標是什麼？",
-            answer: [-3, 4]
+            answer: new Point(-3, 4)
         },
         demo: {
             type: 'rotate',
             text: "將 (3, 0) 逆時針旋轉 90°",
-            start: { x: 3, y: 0 },
+            start: new Point(3, 0),
             params: [90],
             gridRange: 5
         }
@@ -147,12 +147,12 @@ export const TUTORIAL_DATA: Record<string, TutorialData> = {
                   <div class="example-step"><strong>結果：</strong> $(x',y')=\\boxed{(2, -4)}$</div>`,
         practice: {
             question: "將點 (-3, 5) 沿 X 軸反射。新的坐標是什麼？",
-            answer: [-3, -5]
+            answer: new Point(-3, -5)
         },
         demo: {
             type: 'reflect',
             text: "將 (3, 2) 沿 x 軸反射",
-            start: { x: 3, y: 2 },
+            start: new Point(3, 2),
             params: ['x'],
             gridRange: 5
         }
@@ -167,12 +167,12 @@ export const TUTORIAL_DATA: Record<string, TutorialData> = {
                   <div class="example-step"><strong>結果：</strong> $(x',y')=\\boxed{(-3, 4)}$</div>`,
         practice: {
             question: "將點 (4, -2) 沿 Y 軸反射。新的坐標是什麼？",
-            answer: [-4, -2]
+            answer: new Point(-4, -2)
         },
         demo: {
             type: 'reflect',
             text: "將 (2, 3) 沿 y 軸反射",
-            start: { x: 2, y: 3 },
+            start: new Point(2, 3),
             params: ['y'],
             gridRange: 5
         }
@@ -188,13 +188,13 @@ export const TUTORIAL_DATA: Record<string, TutorialData> = {
                   <div class="example-step"><strong>結果：</strong> $(x', y')=\\boxed{(0, 4)}$</div>`,
         practice: {
             question: "將點 (4, 2) 繞 (1, 1) 旋轉 90°。新的坐標是什麼？",
-            answer: [2, 4]
+            answer: new Point(0, 4)
         },
         demo: {
             type: 'rotate_point',
             text: "將 (3, 2) 繞 (1, 1) 逆時針旋轉 120°",
-            start: { x: 3, y: 2 },
-            params: [1, 1, 120],
+            start: new Point(3, 2) ,
+            params: [new Point(1, 1), 120],
             gridRange: 5
         }
     },
@@ -208,13 +208,13 @@ export const TUTORIAL_DATA: Record<string, TutorialData> = {
                   <div class="example-step"><strong>結果：</strong> $(x', y')=\\boxed{(7, 2)}$</div>`,
         practice: {
             question: "將點 (5, -3) 沿直線 y=x 反射。新的坐標是什麼？",
-            answer: [-3, 5]
+            answer: new Point(-3, 5)
         },
         demo: {
             type: 'reflect_line',
             text: "將 (3, 1) 沿 y=x 反射",
-            start: { x: 3, y: 1 },
-            params: [1, -1, 0],
+            start: new Point(3, 1),
+            params: [new Line(1, -1, 0)],
             gridRange: 5
         }
     },
@@ -229,13 +229,13 @@ export const TUTORIAL_DATA: Record<string, TutorialData> = {
                   <div class="example-step"><strong>結果：</strong> $(x', y')=\\boxed{(2, -4)}$</div>`,
         practice: {
             question: "將點 (-3, 4) 沿直線 y=-x 反射。新的坐標是什麼？",
-            answer: [-4, 3]
+            answer: new Point(4, -3)
         },
         demo: {
             type: 'reflect_line',
             text: "將 (2, 3) 沿 y=-x 反射",
-            start: { x: 2, y: 3 },
-            params: [1, 1, 0],
+            start: new Point(2, 3) ,
+            params: [new Line(1, 1, 0)],
             gridRange: 5
         }
     },
@@ -252,13 +252,13 @@ export const TUTORIAL_DATA: Record<string, TutorialData> = {
                   <div class="example-step"><strong>結果：</strong> $(x',y')=\\boxed{(-2, -1)}$</div>`,
         practice: {
             question: "將點 (1, 1) 沿直線 x+y=0（即 x+y+0=0）反射。新的坐標是什麼？",
-            answer: [-1, -1]
+            answer: new Point(-1, -1)
         },
         demo: {
             type: 'reflect_line',
             text: "將 (2, 1) 沿 4x-2y-1=0 反射",
-            start: { x: 2, y: 1 },
-            params: [4, -2, -1],
+            start: new Point(2, 1),
+            params: [new Line(4, -2, -1)],
             gridRange: 5
         }
     }

@@ -17,10 +17,8 @@
     <component
         :is="currentScreen"
         v-else-if="currentScreenName === 'GameScreen'"
-        :original-x="gameData.originalX"
-        :original-y="gameData.originalY"
-        :current-x="gameData.currentX"
-        :current-y="gameData.currentY"
+        :original="gameData.original"
+        :current="gameData.current"
         :transformations="gameData.transformations"
         @game-start="handleGameStart"
         @answer-check="handleAnswerCheck"
@@ -29,10 +27,8 @@
     <component
         :is="currentScreen"
         v-else-if="currentScreenName === 'ResultScreen'"
-        :user-x="resultData.userX"
-        :user-y="resultData.userY"
-        :correct-x="resultData.correctX"
-        :correct-y="resultData.correctY"
+        :user="resultData.user"
+        :correct="resultData.correct"
         :is-correct="resultData.isCorrect"
         @replay="handleReplay"
         @new-game="handleNewGame"
@@ -60,11 +56,12 @@ import TutorialContent from './components/TutorialContent.vue'
 import GameScreen from './components/GameScreen.vue'
 import ResultScreen from './components/ResultScreen.vue'
 
+import {Point} from '@/utils/point.ts'
+
 type ScreenName = 'MainMenu' | 'SetupScreen' | 'TutorialSelect' | 'TutorialContent' | 'GameScreen' | 'ResultScreen'
 
 const currentScreenName = ref<ScreenName>('MainMenu')
 
-// 移除 currentScreenProps，改用明確的 props
 const currentScreen = computed(() => {
   const screens: Record<ScreenName, any> = {
     MainMenu,
@@ -78,7 +75,6 @@ const currentScreen = computed(() => {
 })
 
 const navigateTo = (screen: ScreenName) => {
-  console.log('🧭 [App.vue] navigateTo:', screen)
   currentScreenName.value = screen
 
   setTimeout(() => {
@@ -90,20 +86,16 @@ provide('navigateTo', navigateTo)
 
 // 遊戲資料
 const gameData = ref({
-  originalX: 0,
-  originalY: 0,
-  currentX: 0,
-  currentY: 0,
+  original: new Point(0, 0) as Point,
+  current: new Point(0, 0) as Point,
   transformations: [] as string[],
   iterationCount: 5
 })
 
 // 結果資料
 const resultData = ref({
-  userX: 0,
-  userY: 0,
-  correctX: 0,
-  correctY: 0,
+  user: new Point(0, 0) as Point,
+  correct: new Point(0, 0) as Point,
   isCorrect: false
 })
 
@@ -116,17 +108,14 @@ const handleGameStart = (data: any) => {
   navigateTo('GameScreen')
 }
 
-const handleAnswerCheck = (userX: number, userY: number, correctX: number, correctY: number, isCorrect: boolean) => {
-  console.log('✓ [App.vue] handleAnswerCheck:', { userX, userY, correctX, correctY, isCorrect })
-  resultData.value = { userX, userY, correctX, correctY, isCorrect }
+const handleAnswerCheck = (user: Point, correct: Point, isCorrect: boolean) => {
+  resultData.value = { user, correct, isCorrect }
   navigateTo('ResultScreen')
 }
 
 const handleLessonSelect = (lessonId: string) => {
-  console.log('📚 [App.vue] handleLessonSelect:', lessonId)
-
   if (!lessonId) {
-    console.error('❌ [App.vue] lessonId 為空!')
+    console.error('[App.vue] lessonId 為空!')
     return
   }
 

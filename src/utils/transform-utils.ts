@@ -33,15 +33,9 @@ export interface TutorialData {
     example: string;
     practice: {
         question: string;
-        answer: [number, number];
+        answer: Point;
     };
-    demo: {
-        type: string;
-        text: string;
-        start: { x: number; y: number };
-        params: any[];
-        gridRange: number;
-    };
+    demo: DemoData;
 }
 
 /**
@@ -214,5 +208,14 @@ export namespace TransformUtils {
             point: current.reflect(line),
             description: `${line.toString()} 反射`
         };
+    }
+
+    export function toRad(degree: number): number{
+        return degree * Math.PI / 180
+    }
+
+    export function isCorrect(input: Point, answer: Point): boolean{
+        const difference = input.subtract(answer)
+        return Math.abs(difference.x) < 0.1 && Math.abs(difference.y) < 0.1
     }
 }

@@ -1,4 +1,5 @@
-import {Point, DemoData, TransformUtils, Line} from './transform-utils.ts';
+import {DemoData, TransformUtils} from '@/utils/transform-utils.ts';
+import {Point, Line, atan2} from '@/utils/point.ts';
 
 export namespace CanvaDrawing{
     export function drawGrid(ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement, range: number) {
@@ -48,19 +49,18 @@ export namespace CanvaDrawing{
         export function drawPoint(
             ctx: CanvasRenderingContext2D,
             canvas: HTMLCanvasElement,
-            x: number,
-            y: number,
+            point: Point,
             color: string,
             label: string,
             range: number,
-            textYOffset: number = 10
+            textOffset: Point = new Point(10, 10)
         ) {
             const cellSize = canvas.width / (range * 2)
             const centerX = canvas.width / 2
             const centerY = canvas.height / 2
 
-            const screenX = centerX + x * cellSize
-            const screenY = centerY - y * cellSize
+            const screenX = centerX + point.x * cellSize
+            const screenY = centerY - point.y * cellSize
 
             ctx.beginPath()
             ctx.arc(screenX, screenY, 6, 0, Math.PI * 2)
@@ -72,42 +72,39 @@ export namespace CanvaDrawing{
 
             ctx.fillStyle = '#333'
             ctx.font = 'bold 12px Arial'
-            ctx.fillText(label, screenX + 10, screenY - textYOffset)
+            ctx.fillText(label, screenX - textOffset.x, screenY - textOffset.y)
         }
 
         export function drawArrow(
             ctx: CanvasRenderingContext2D,
-            fromX: number,
-            fromY: number,
-            toX: number,
-            toY: number,
+            fromPoint: Point,
+            toPoint: Point,
             color: string,
             reverse: boolean = false
         ) {
             const headlen = 15
-            const angle = Math.atan2(toY - fromY, toX - fromX) + (reverse ? Math.PI : 0)
+            const angle = atan2(toPoint, fromPoint) + (reverse ? Math.PI : 0)
 
             ctx.strokeStyle = color
             ctx.lineWidth = 3
             ctx.fillStyle = color
 
             ctx.beginPath()
-            ctx.moveTo(fromX, fromY)
-            ctx.lineTo(toX, toY)
+            ctx.moveTo(fromPoint.x, fromPoint.y)
+            ctx.lineTo(toPoint.x, toPoint.y)
             ctx.stroke()
 
             ctx.beginPath()
-            ctx.moveTo(toX, toY)
-            ctx.lineTo(toX - headlen * Math.cos(angle - Math.PI / 6), toY - headlen * Math.sin(angle - Math.PI / 6))
-            ctx.lineTo(toX - headlen * Math.cos(angle + Math.PI / 6), toY - headlen * Math.sin(angle + Math.PI / 6))
+            ctx.moveTo(toPoint.x, toPoint.y)
+            ctx.lineTo(toPoint.x - headlen * Math.cos(angle - Math.PI / 6), toPoint.y - headlen * Math.sin(angle - Math.PI / 6))
+            ctx.lineTo(toPoint.x - headlen * Math.cos(angle + Math.PI / 6), toPoint.y - headlen * Math.sin(angle + Math.PI / 6))
             ctx.closePath()
             ctx.fill()
         }
 
         export function drawRotationArc(
             ctx: CanvasRenderingContext2D,
-            centerX: number,
-            centerY: number,
+            centerPoint: Point,
             radius: number,
             startAngle: number,
             endAngle: number,
@@ -120,20 +117,19 @@ export namespace CanvaDrawing{
             ctx.setLineDash([5, 3])
 
             ctx.beginPath()
-            ctx.arc(centerX, centerY, arcRadius, startAngle, endAngle, startAngle > endAngle)
+            ctx.arc(centerPoint.x, centerPoint.y, arcRadius, startAngle, endAngle, startAngle > endAngle)
             ctx.stroke()
 
             ctx.setLineDash([])
 
             const arrowAngle = endAngle
-            const arrowX = centerX + arcRadius * Math.cos(arrowAngle)
-            const arrowY = centerY + arcRadius * Math.sin(arrowAngle)
+            const arrowMultiplier = Point.fromAngle(arrowAngle, arcRadius)
+            const arrow = centerPoint.add(arrowMultiplier)
 
             const tangentAngle = arrowAngle + Math.PI / 2
-            const arrowTipX = arrowX + 8 * Math.cos(tangentAngle)
-            const arrowTipY = arrowY + 8 * Math.sin(tangentAngle)
+            const arrowTip = arrow.add(Point.fromAngle(tangentAngle, 8))
 
-            drawArrow(ctx, arrowX, arrowY, arrowTipX, arrowTipY, color, true)
+            drawArrow(ctx, arrow, arrowTip, color, true)
         }
 
         export function drawLine(
@@ -177,12 +173,19 @@ export namespace CanvaDrawing{
             ctx.setLineDash([])
         }
 
-        export function arrow(ctx: CanvasRenderingContext2D, canvasRef: HTMLCanvasElement, start: Point, current: Point, cellSize: number, color: string){
+        export function arrow(
+            ctx: CanvasRenderingContext2D,
+            canvasRef: HTMLCanvasElement,
+            start: Point,
+            current: Point,
+            cellSize: number,
+            color: string
+        ){
             const screenStartX = canvasRef.width / 2 + start.x * cellSize
             const screenStartY = canvasRef.height / 2 - start.y * cellSize
             const screenCurrX = canvasRef.width / 2 + current.x * cellSize
             const screenCurrY = canvasRef.height / 2 - current.y * cellSize
-            drawArrow(ctx, screenStartX, screenStartY, screenCurrX, screenCurrY, color)
+            drawArrow(ctx, new Point(screenStartX, screenStartY), new Point(screenCurrX, screenCurrY), color)
         }
     }
 
@@ -194,12 +197,9 @@ export namespace CanvaDrawing{
         demoData: DemoData,
         cellSize: number,
     ): Point{
-        const [dx, dy] = demoData.params
+        const [point] = demoData.params
 
-        const current = {
-            x: start.x + dx * frame,
-            y: start.y + dy * frame
-        }
+        const current = start.add(point.scale(frame))
 
         if (frame > 0) {
             detail.arrow(ctx, canvasRef, start, current, cellSize, '#f39c12')
@@ -217,11 +217,7 @@ export namespace CanvaDrawing{
         cellSize: number,
     ): Point{
         const [k] = demoData.params
-        const t = frame
-        const current = {
-            x: start.x * (1 + (k - 1) * t),
-            y: start.y * (1 + (k - 1) * t)
-        }
+        const current = start.scale(1 + (k - 1) * frame)
 
         if (frame > 0) {
             detail.arrow(ctx, canvasRef, start, current, cellSize, '#f39c12');
@@ -238,25 +234,27 @@ export namespace CanvaDrawing{
         range: number,
         angle: number,
         cellSize: number,
-        center: Point = {x: 0, y: 0}
+        center: Point = new Point(0, 0)
     ): Point{
         const currentAngle = angle * frame
-        const current = TransformUtils.rotateCoordByPoint(start.x, start.y, center.x, center.y, currentAngle)
+        const current = TransformUtils.rotateCoordByPoint(start, center, currentAngle)
         console.log('angle is ', currentAngle)
 
-        const originScreenX = canvasRef.width / 2 + center.x * cellSize
-        const originScreenY = canvasRef.height / 2 - center.y * cellSize
+        const originScreen = new Point(
+            canvasRef.width / 2 + center.x * cellSize,
+            canvasRef.height / 2 - center.y * cellSize
+        )
 
-        detail.drawPoint(ctx, canvasRef, center.x, center.y, '#e74c3c', 'Center', range)
+        detail.drawPoint(ctx, canvasRef, center, '#e74c3c', 'Center', range)
 
         const radius = Math.hypot(start.x - center.x, start.y - center.y) * cellSize
 
         if (frame > 0) {
             const startAngle = -Math.atan2(start.y, start.x)
-            detail.drawRotationArc(ctx, originScreenX, originScreenY, radius, startAngle, startAngle-TransformUtils.toRad(currentAngle)+0.05, '#f39c12')
+            detail.drawRotationArc(ctx, originScreen, radius, startAngle, startAngle-TransformUtils.toRad(currentAngle)+0.05, '#f39c12')
         }
 
-        return {x: current.x, y: current.y}
+        return current.point
     }
 
     export function handleReflect(
@@ -268,18 +266,9 @@ export namespace CanvaDrawing{
         range: number,
         cellSize: number,
     ): Point{
-        const t = frame
+        const final = start.reflect(line)
 
-        // Calculate the reflected point
-        const sqHypot = line.A ** 2 + line.B ** 2
-        const coordSubs = line.A * start.x + line.B * start.y + line.C
-        const finalX = start.x - 2 * line.A * coordSubs / sqHypot
-        const finalY = start.y - 2 * line.B * coordSubs / sqHypot
-
-        const current = {
-            x: start.x + (finalX - start.x) * t,
-            y: start.y + (finalY - start.y) * t
-        }
+        const current = start.add(final.subtract(start).scale(frame))
 
         // Draw the reflection line
         detail.drawLine(ctx, canvasRef, line, range)

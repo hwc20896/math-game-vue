@@ -3,12 +3,12 @@
     <div class="result-content">
       <h2 id="result-title" :style="{ color: resultColor }">{{ resultTitle }}</h2>
       <div class="result-details">
-        <p>你的答案：<span id="user-result">{{ userResult }}</span></p>
+        <p>你的答案：<span id="user-result" :style="{color: resultColor}">{{ userResult }}</span></p>
         <p>正確答案：<span id="correct-result">{{ correctResult }}</span></p>
       </div>
       <div class="button-group">
         <button class="btn btn-replay" @click="replay">再玩一次</button>
-        <button class="btn btn-new-game" @click="newGame">新遊戲</button>
+        <button class="btn btn-new-game" @click="newGame">回到主頁面</button>
       </div>
     </div>
   </div>
@@ -16,12 +16,11 @@
 
 <script setup lang="ts">
 import { computed, inject } from 'vue'
+import { Point } from '@/utils/point.ts'
 
 interface ResultProps {
-  userX: number
-  userY: number
-  correctX: number
-  correctY: number
+  user: Point
+  correct: Point
   isCorrect: boolean
 }
 
@@ -35,8 +34,8 @@ const navigateTo = inject<(screen: string) => void>('navigateTo')
 
 const resultTitle = computed(() => props.isCorrect ? '🎉 恭喜！' : '❌ 答案錯誤')
 const resultColor = computed(() => props.isCorrect ? '#43e97b' : '#f5576c')
-const userResult = computed(() => `(${props.userX}, ${props.userY})`)
-const correctResult = computed(() => `(${props.correctX}, ${props.correctY})`)
+const userResult = computed(() => props.user.toString())
+const correctResult = computed(() => props.correct.toString())
 
 const replay = () => {
   emit('replay')
@@ -78,12 +77,8 @@ const newGame = () => {
   font-family: 'Courier New', monospace;
 }
 
-#user-result {
-  color: #f5576c;
-}
-
 #correct-result {
-  color: #43e97b;
+  color: #333333;
 }
 
 .button-group {

@@ -40,10 +40,8 @@ import { difficulties, difficultyClasses, OPTIONS_DIFFICULTY } from "@/utils/con
 import { Point } from '@/utils/point.ts'
 
 interface GameData {
-  originalX: number
-  originalY: number
-  currentX: number
-  currentY: number
+  original: Point
+  current: Point
   transformations: string[]
   iterationCount: number
 }
@@ -86,11 +84,9 @@ const startGame = () => {
     return
   }
 
-  const originalX = TransformUtils.randInt(0, 10)
-  const originalY = TransformUtils.randInt(0, 10)
+  const original = Point.randomRange(10)
 
-  let currentX = originalX
-  let currentY = originalY
+  let current = new Point(original.x, original.y)
   const transformations: string[] = []
 
   const options = OPTIONS_DIFFICULTY[difficulty.value]
@@ -117,7 +113,7 @@ const startGame = () => {
     }
 
     let result: TransformResult
-    const currentPoint = new Point(currentX, currentY)
+    const currentPoint = new Point(current.x, current.y)
 
     if (target.argGen === null) {
       result = target.func(currentPoint)
@@ -126,16 +122,15 @@ const startGame = () => {
       result = target.func(currentPoint, ...args)
     }
 
-    currentX = TransformUtils.roundToDecimal(result.point.x, 2)
-    currentY = TransformUtils.roundToDecimal(result.point.y, 2)
+    console.log(`Attempt ${i+1}: Result = ${result.point.toString()}`)
+    current.x = TransformUtils.roundToDecimal(result.point.x, 2)
+    current.y = TransformUtils.roundToDecimal(result.point.y, 2)
     transformations.push(result.description)
   }
 
   emit('gameStart', {
-    originalX,
-    originalY,
-    currentX,
-    currentY,
+    original,
+    current,
     transformations,
     iterationCount: iterationCount.value
   })

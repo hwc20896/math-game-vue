@@ -2,7 +2,7 @@
   <div id="game-screen" class="screen">
     <div class="game-info">
       <div class="coordinate-display">
-        <span class="original-coord">起始坐標：({{ originalX }}, {{ originalY }})</span>
+        <span class="original-coord">起始坐標：{{original.toString()}}</span>
       </div>
       <div class="transformation-log">
         <h3>變換步驟：</h3>
@@ -28,19 +28,20 @@
   </div>
 </template>
 
-<script setup lang="ts">import { ref, inject } from 'vue'
+<script setup lang="ts">
+import { ref, inject } from 'vue'
+import { Point } from '@/utils/point.ts'
+import {TransformUtils} from "@/utils/transform-utils.ts";
 
 interface GameProps {
-  originalX: number
-  originalY: number
-  currentX: number
-  currentY: number
+  original: Point
+  current: Point
   transformations: string[]
 }
 
 const props = defineProps<GameProps>()
 const emit = defineEmits<{
-  answerCheck: [userX: number, userY: number, correctX: number, correctY: number, isCorrect: boolean]
+  answerCheck: [user: Point, correct: Point, isCorrect: boolean]
 }>()
 
 const navigateTo = inject<(screen: string) => void>('navigateTo')
@@ -57,9 +58,10 @@ const checkAnswer = () => {
 
   const userX = parseFloat(match[1])
   const userY = parseFloat(match[3])
-  const isCorrect = Math.abs(userX - props.currentX) < 0.01 && Math.abs(userY - props.currentY) < 0.01
 
-  emit('answerCheck', userX, userY, props.currentX, props.currentY, isCorrect)
+  const user = new Point(userX, userY)
+
+  emit('answerCheck', user, props.current, TransformUtils.isCorrect(user, props.current))
   navigateTo?.('ResultScreen')
 }
 </script>
