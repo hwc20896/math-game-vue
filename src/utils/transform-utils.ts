@@ -126,7 +126,7 @@ export namespace TransformUtils {
      * @returns TransformResult with reflected position and description
      */
     export function reflectByXAxis(current: Point): TransformResult {
-        const xAxis: Line = new Line(1, 0, 0);
+        const xAxis: Line = new Line(0, 1, 0);  //  y=0
         return {
             point: current.reflect(xAxis),
             description: `X 軸反射`
@@ -139,7 +139,7 @@ export namespace TransformUtils {
      * @returns TransformResult with reflected position and description
      */
     export function reflectByYAxis(current: Point): TransformResult {
-        const yAxis: Line = new Line(0, 1, 0);
+        const yAxis: Line = new Line(1, 0, 0);   // x=0
         return {
             point: current.reflect(yAxis),
             description: `Y 軸反射`
