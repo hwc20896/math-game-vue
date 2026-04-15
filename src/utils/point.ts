@@ -27,6 +27,10 @@ export class Point{
         return new Point(this.x + other.x, this.y + other.y);
     }
 
+    subtract(other: Point): Point{
+        return new Point(this.x - other.x, this.y - other.y);
+    }
+
     /**
      * Scales this point by a given factor.
      * @param factor - The scaling factor
@@ -100,8 +104,12 @@ export class Point{
      * @param min - Minimum coordinate value for both x and y (default: 0)
      * @returns A new random Point with integer coordinates
      */
-    static randomRange(max: number, min: number = 0){
+    static randomRange(max: number, min: number = 0) {
         return Point.random(max, max, min, min);
+    }
+
+    static fromAngle(angleRadians: number, radius: number = 1){
+        return new Point(radius * Math.cos(angleRadians), radius * Math.sin(angleRadians))
     }
 }
 
@@ -180,4 +188,9 @@ export class Line{
     static randomRange(max: number, min: number = 0){
         return Line.random(max, max, max, min, min, min);
     }
+}
+
+export function atan2(point1: Point, point2: Point): number{
+    const diff = point1.subtract(point2);
+    return Math.atan2(diff.y, diff.x);
 }
