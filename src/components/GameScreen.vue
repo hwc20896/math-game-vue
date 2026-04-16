@@ -2,9 +2,10 @@
   <div id="game-screen" class="screen">
     <div class="game-info">
       <div class="coordinate-display">
-        <span class="original-coord">起始坐標：{{original.toString()}}</span>
+        <span class="difficulty">難度：{{ localDifficulty.label }}</span>
       </div>
       <div class="transformation-log">
+        <span class="original-coord">- 起始坐標：{{original.toString()}}</span>
         <h3>變換步驟：</h3>
         <ul id="transform-list">
           <li v-for="(transform, index) in transformations" :key="index">
@@ -29,11 +30,13 @@
 </template>
 
 <script setup lang="ts">
-import { ref, inject } from 'vue'
+import { ref, inject, computed } from 'vue'
 import { Point } from '@/utils/point.ts'
-import {TransformUtils} from "@/utils/transform-utils.ts";
+import { TransformUtils } from "@/utils/transform-utils.ts"
+import { difficultyLevel } from '@/utils/constants.ts'
 
 interface GameProps {
+  difficulty: number
   original: Point
   current: Point
   transformations: string[]
@@ -47,6 +50,11 @@ const emit = defineEmits<{
 const navigateTo = inject<(screen: string) => void>('navigateTo')
 
 const userAnswer = ref('')
+const localDifficulty = computed(() => {
+  const dif = difficultyLevel[props.difficulty]
+  console.log(dif)
+  return dif
+})
 
 const checkAnswer = () => {
   const match = userAnswer.value.trim().match(/\(\s*(-?\d+(\.\d+)?)\s*,\s*(-?\d+(\.\d+)?)\s*\)/)
@@ -66,13 +74,14 @@ const checkAnswer = () => {
 }
 </script>
 
-<style scoped>.game-info {
+<style scoped>
+.game-info {
   margin-bottom: 30px;
 }
 
 .coordinate-display {
-  background: linear-gradient(135deg, #667eea, #764ba2);
-  color: white;
+  background: v-bind(localDifficulty.color);
+  color: v-bind(localDifficulty.text_color);
   padding: 20px;
   border-radius: 10px;
   margin-bottom: 20px;
@@ -103,7 +112,9 @@ const checkAnswer = () => {
   padding: 12px;
   margin-bottom: 10px;
   border-radius: 8px;
-  border-left: 4px solid #667eea;
+  border-left-color: v-bind(localDifficulty.color);
+  border-left-width: 5px;
+  border-left-style: solid;
   color: #333;
   font-family: 'Courier New', monospace;
   font-size: 0.95rem;
@@ -143,5 +154,10 @@ const checkAnswer = () => {
   border-radius: 10px;
   font-weight: bold;
   cursor: pointer;
+}
+
+.original-coord{
+  font-weight: bold;
+  font-size: 1.3rem;
 }
 </style>

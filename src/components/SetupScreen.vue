@@ -34,12 +34,13 @@
 </template>
 
 <script setup lang="ts">
-import {ref, inject, watch} from 'vue'
+import {ref, inject, watch, computed} from 'vue'
 import { TransformUtils, TransformResult } from '@/utils/transform-utils'
-import { difficulties, difficultyClasses, OPTIONS_DIFFICULTY } from "@/utils/constants.ts";
+import { difficultyLevel, OPTIONS_DIFFICULTY } from "@/utils/constants.ts";
 import { Point } from '@/utils/point.ts'
 
 interface GameData {
+  difficulty: number
   original: Point
   current: Point
   transformations: string[]
@@ -57,8 +58,16 @@ const iterationCount = ref(3)
 const showIterationInput = ref(false)
 const errorMessage = ref('')
 
+const difficulties = computed(() => {
+  const result: Record<number, string> = {}
+  for (const level in difficultyLevel){
+    result[Number(level)] = difficultyLevel[Number(level)].label
+  }
+  return result
+})
+
 const getDifficultyClass = (level: number): string => {
-  return difficultyClasses[level] || ''
+  return difficultyLevel[level].color_class || ''
 }
 
 const selectDifficulty = (level: number) => {
@@ -129,6 +138,7 @@ const startGame = () => {
   }
 
   emit('gameStart', {
+    difficulty: difficulty.value,
     original,
     current,
     transformations,
@@ -189,27 +199,27 @@ watch(iterationCount, () => {
 }
 
 .btn-normal {
-  background: linear-gradient(135deg, #667eea, #764ba2);
+  background: linear-gradient(135deg, v-bind(difficultyLevel[1].gradient_color.from), v-bind(difficultyLevel[1].gradient_color.to));
   opacity: 0.5;
-  color: white;
+  color: v-bind(difficultyLevel[1].text_color);
 }
 
 .btn-hard {
-  background: linear-gradient(135deg, #f093fb, #f5576c);
+  background: linear-gradient(135deg, v-bind(difficultyLevel[2].gradient_color.from), v-bind(difficultyLevel[2].gradient_color.to));
   opacity: 0.5;
-  color: white;
+  color: v-bind(difficultyLevel[2].text_color);
 }
 
 .btn-hell {
-  background: linear-gradient(135deg, #4facfe, #00f2fe);
+  background: linear-gradient(135deg, v-bind(difficultyLevel[3].gradient_color.from), v-bind(difficultyLevel[3].gradient_color.to));
   opacity: 0.5;
-  color: white;
+  color: v-bind(difficultyLevel[3].text_color);
 }
 
 .btn-extreme {
-  background: linear-gradient(135deg, #fa709a, #fee140);
+  background: linear-gradient(135deg, v-bind(difficultyLevel[4].gradient_color.from), v-bind(difficultyLevel[4].gradient_color.to));
   opacity: 0.5;
-  color: white;
+  color: v-bind(difficultyLevel[4].text_color);
 }
 
 .btn-start {

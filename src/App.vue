@@ -17,6 +17,7 @@
     <component
         :is="currentScreen"
         v-else-if="currentScreenName === 'GameScreen'"
+        :difficulty="gameData.difficulty"
         :original="gameData.original"
         :current="gameData.current"
         :transformations="gameData.transformations"
@@ -86,6 +87,7 @@ provide('navigateTo', navigateTo)
 
 // 遊戲資料
 const gameData = ref({
+  difficulty: 1,
   original: new Point(0, 0) as Point,
   current: new Point(0, 0) as Point,
   transformations: [] as string[],

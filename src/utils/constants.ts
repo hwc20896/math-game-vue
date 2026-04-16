@@ -9,6 +9,17 @@ interface Lesson {
     level: 'basic' | 'advanced' | 'expert'
 }
 
+interface Difficulty {
+    label: string
+    color: string,
+    color_class: string
+    text_color: string
+    gradient_color: {
+        from: string
+        to: string
+    }
+}
+
 export const VALID_ROTATE_ANGLES = [-90, 90, 180];
 export const VALID_ROTATE_ANGLES_HARD = [
     -150, -135, -120, -90, -60, -45, -30,
@@ -31,8 +42,7 @@ const {
     reflectBy135DegLine,
     reflectByLine,
     choice,
-    randInt,
-
+    randInt
 } = TransformUtils;
 
 // 難度選項
@@ -289,16 +299,45 @@ export const lessons: Lesson[] = [
     { id: 'reflect_line', title: '一般直線反射', icon: '✏️', description: '沿 Ax+By+C=0 反射', level: 'expert' }
 ]
 
-export const difficulties: Record<number, string> = {
-    1: '普通 (Normal)',
-    2: '困難 (Hard)',
-    3: '地獄 (Hell)',
-    4: '極限地獄 (Extreme)'
-}
-
-export const difficultyClasses: Record<number, string> = {
-    1: 'btn-normal',
-    2: 'btn-hard',
-    3: 'btn-hell',
-    4: 'btn-extreme'
+export const difficultyLevel: Record<number, Difficulty> = {
+    1: {
+        label: '基礎 (Basic)',
+        color: '#bdf1d3',
+        color_class: 'btn-normal',
+        text_color: '#111',
+        gradient_color: {
+            from: "#C3E2C6 0%",
+            to: "#D5E9C0 100%"
+        }
+    },
+    2: {
+        label: '進階 (Advanced)',
+        color: '#f3cfa8',
+        color_class: 'btn-hard',
+        text_color: '#111',
+        gradient_color: {
+            from: "#FFF3E0 0%",
+            to: "#FFE6C7 100%"
+        }
+    },
+    3: {
+        label: '困難 (Difficult)',
+        color: '#f4a9a9',
+        color_class: 'btn-hell',
+        text_color: '#111',
+        gradient_color: {
+            from: "#FFE3E3 0%",
+            to: "#FFC9C9 100%"
+        }
+    },
+    4: {
+        label: '地獄 (Hell)',
+        color: '#6e5851',
+        color_class: 'btn-extreme',
+        text_color: "#fff",
+        gradient_color: {
+            from: "#3B1E1E 0%",
+            to: "#1A0E0E 100%"
+        }
+    }
 }
