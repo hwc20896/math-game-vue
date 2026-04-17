@@ -332,7 +332,7 @@ export const difficultyLevel: Record<number, Difficulty> = {
     },
     4: {
         label: '地獄 (Hell)',
-        color: '#6e5851',
+        color: '#a38e88',
         color_class: 'btn-extreme',
         text_color: "#fff",
         gradient_color: {
