@@ -114,14 +114,50 @@ export class Point{
 }
 
 export class Line{
-    constructor(public A: number, public B: number, public C: number){}
+    public A: number
+    public B: number
+    public C: number
+
+    constructor(A: number, B: number, C: number) {
+        if (A < 0){
+            A *= -1
+            B *= -1
+            C *= -1
+        }
+
+        const gcd = (a: number, b: number): number => {
+            return b === 0? a : gcd(b, a%b);
+        }
+
+        const gcdAll = gcd(A, gcd(B, C))
+
+        this.A = A / gcdAll
+        this.B = B / gcdAll
+        this.C = C / gcdAll
+    }
 
     /**
      * Returns a string representation of the line equation.
      * @returns String in format "Ax+By+C=0"
      */
     toString(): string {
-        return `${this.A}x+${this.B}y+${this.C}=0`;
+        let result: string = ""
+        if (this.A == 1) result = "x";
+        else if (this.A != 0) result = `${this.A}x`;
+
+        if (this.A != 0){
+            result += this.B < 0? " - " : " + "
+        }
+
+        if (this.B != 0){
+            result += `${Math.abs(this.B)}y`;
+        }
+
+        if (this.C != 0) {
+            result += (this.C < 0? " - " : " + ") + `${Math.abs(this.C)}`;
+        }
+
+        return `${result} = 0`
     }
 
     /**
