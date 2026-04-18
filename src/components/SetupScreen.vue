@@ -53,7 +53,7 @@ const emit = defineEmits<{
 
 const navigateTo = inject<(screen: string) => void>('navigateTo')
 
-const difficulty = ref(1)
+const difficulty = ref(0)
 const iterationCount = ref(3)
 const showIterationInput = ref(false)
 const errorMessage = ref('')
