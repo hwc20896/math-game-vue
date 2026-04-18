@@ -1,6 +1,6 @@
 {
-  "name": "MyWebSite",
-  "short_name": "MySite",
+  "name": "坐標變換遊戲",
+  "short_name": "坐標變換",
   "icons": [
     {
       "src": "/public/web-app-manifest-192x192.png",
