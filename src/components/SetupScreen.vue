@@ -6,8 +6,8 @@
         <button
             v-for="(label, level) in difficulties"
             :key="level"
-            :class="['btn', getDifficultyClass(level), { selected: difficulty === level }]"
-            @click="selectDifficulty(level)"
+            :class="['btn', getDifficultyClass(Number(level)), { selected: difficulty === Number(level) }]"
+            @click="selectDifficulty(Number(level))"
         >
           {{ label }}
         </button>

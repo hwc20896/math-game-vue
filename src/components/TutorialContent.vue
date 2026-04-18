@@ -72,7 +72,6 @@ import {latexFormulas, TUTORIAL_DATA} from "@/utils/constants.ts";
 import {CanvaDrawing} from '@/utils/canva-drawing';
 import katex from 'katex'
 import {Point, Line} from '@/utils/point.ts'
-import 'katex/dist/katex.min.css'
 import {TransformUtils} from "@/utils/transform-utils.ts";
 
 const navigateTo = inject<(screen: string) => void>('navigateTo')

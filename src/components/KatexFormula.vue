@@ -1,6 +1,5 @@
 <template>
   <span
-      ref="katexRef"
       class="katex-formula"
       v-html="renderedHtml"
   ></span>
@@ -22,7 +21,6 @@ const props = withDefaults(defineProps<Props>(), {
   errorColor: '#cc0000'
 })
 
-const katexRef = ref<HTMLElement | null>(null)
 const renderedHtml = ref('')
 
 const renderKatex = () => {
