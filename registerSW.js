@@ -1,0 +1,1 @@
+if('serviceWorker' in navigator) {window.addEventListener('load', () => {navigator.serviceWorker.register('/math-vue-pwa-game/sw.js', { scope: '/math-vue-pwa-game/' })})}
