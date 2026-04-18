@@ -86,7 +86,12 @@ $$
 
 #### 複數運算
 
-// TODO
+$$
+\begin{align}
+&設起始點對應複數 z=x+yi，繞點所對應複數 c=a+bi，則繞點旋轉後對應複數w為\\
+&w=(z-c)e^{i\theta}+c。
+\end{align}
+$$
 
 ### 以 $y=x$ 反射：（$\longrightarrow$ 通式：_以任意直綫反射_）
 
@@ -104,4 +109,38 @@ $$
 
 ### 以任意直綫反射
 
-//  TODO
+$$
+\begin{align}
+\begin{pmatrix}x\\y\end{pmatrix}
+\longleftarrow\begin{pmatrix}x-2A\cdot\frac{Ax+By+C}{A^2+B^2}\\y-2B\cdot\frac{Ax+By+C}{A^2+B^2}\end{pmatrix}
+=\begin{pmatrix}x\\y\end{pmatrix}-2\cdot\frac{Ax+By+C}{A^2+B^2}\begin{pmatrix}A\\B\end{pmatrix}
+\end{align}
+$$
+
+#### 推導
+
+$$
+\begin{align}
+&設有點 P=(x,y) 及其對稱點 P'(x',y') ，則其斜率 k_0 即為\frac{y-y'}{x-x'}。\\
+&直綫\ell: Ax+By+C=0 斜率 k=-\frac{A}{B}。\\
+&因 PP' 必與 \ell 垂直，故 k_0=-\frac{1}{k}=\frac{B}{A}。\\
+&即 \exists k>0,\begin{pmatrix}x'\\y'\end{pmatrix}=\begin{pmatrix}x-kA\\y-kB\end{pmatrix}\\
+\\
+&設中點 M=(\frac{x+x'}{2},\frac{y+y'}{2})=(x-\frac{kA}{2},y-\frac{kB}{2})。\\
+&因中點必在\ell上，故A(x-\frac{kA}{2})+B(y-\frac{kB}{2})+C=0必成立。\\
+&Ax-A\cdot\frac{kA}{2}+By-B\cdot\frac{kB}{2}+C=0\\
+&-\frac{k}{2}(A^2+B^2)=-(Ax+By+C)\\
+&k=2\cdot\frac{Ax+By+C}{A^2+B^2}\\
+\\
+&代回得\begin{pmatrix}x'\\y'\end{pmatrix}
+=\begin{pmatrix}x-2A\cdot\frac{Ax+By+C}{A^2+B^2}\\y-2B\cdot\frac{Ax+By+C}{A^2+B^2}\end{pmatrix}\\
+&完畢。
+\end{align}
+$$
+
+> 補充：若 $A$ 和 $B$ 同時為 $0$ ，直綫無效，故對任意有效直綫，必須有 $A^2+B^2\neq0$ 。
+> 
+> 補充2：矩陣形式（不是我在說，這個確實有點地獄）
+> $$
+\begin{pmatrix}x\\y\\1\end{pmatrix}\longleftarrow\frac{1}{A^2+B^2}\begin{pmatrix}B^2-A^2&-2AB&-2AC\\-2AB&A^2-B^2&-2BC\\0&0&A^2+B^2\end{pmatrix}\begin{pmatrix}x\\y\\1\end{pmatrix}
+$$
