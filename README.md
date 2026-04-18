@@ -1,42 +1,63 @@
-# math-vue-pwa-game
+# 坐標變換遊戲
 
-This template should help get you started developing with Vue 3 in Vite.
+## 0. 關於專案
 
-## Recommended IDE Setup
+### 儲存庫 URL：
 
-[VS Code](https://code.visualstudio.com/) + [Vue (Official)](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
+https://github.com/hwc20896/math-game-vue
 
-## Recommended Browser Setup
+### 成品 URL：
+https://hwc20896.github.io/math-game-vue/
 
-- Chromium-based browsers (Chrome, Edge, Brave, etc.):
-  - [Vue.js devtools](https://chromewebstore.google.com/detail/vuejs-devtools/nhdogjmejiglipccpnnnanhbledajbpd)
-  - [Turn on Custom Object Formatter in Chrome DevTools](http://bit.ly/object-formatters)
-- Firefox:
-  - [Vue.js devtools](https://addons.mozilla.org/en-US/firefox/addon/vue-js-devtools/)
-  - [Turn on Custom Object Formatter in Firefox DevTools](https://fxdx.dev/firefox-devtools-custom-object-formatters/)
+> [!NOTE]  
+> 此專案為PWA專案，意味著此專案可以通過網路下載並安裝到設備（Windows、iOS、Android等）上。
 
-## Type Support for `.vue` Imports in TS
+## 1. 基本信息
 
-TypeScript cannot handle type information for `.vue` imports by default, so we replace the `tsc` CLI with `vue-tsc` for type checking. In editors, we need [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) to make the TypeScript language service aware of `.vue` types.
+### 組別：
+A-02
 
-## Customize configuration
+### 組員：
+- SC3A 03 洪偉晴
+- SC3A 05 古藝軒
+- SC3A 10 吳恩羚
 
-See [Vite Configuration Reference](https://vite.dev/config/).
+----
 
-## Project Setup
+## 2. 怎麽玩
 
-```sh
-npm install
-```
+//  TODO
 
-### Compile and Hot-Reload for Development
+----
 
-```sh
-npm run dev
-```
+## 3. 設計理念
 
-### Type-Check, Compile and Minify for Production
+### 選擇這個主題的原因
 
-```sh
-npm run build
-```
+//  TODO
+
+### 爲什麽這個游戲會好玩
+
+//  TODO
+
+----
+
+## 4. 數學原理
+
+請參看[math_functions.md](math_functions.md)。
+
+----
+
+## 5. 試玩情況記錄
+
+//  TODO
+
+----
+
+## 6. 分工表
+
+|  組員   |  學號  | 負責項目                 |
+|:-----:|:----:|:---------------------|
+|  洪偉晴  |  3   | 游戲開發、除錯（GitHub賬號擁有者） |
+|  古藝軒  |  5   | 前端設計、測試              |
+|  吳恩羚  |  10  | Logo、測試              |
