@@ -106,8 +106,8 @@ export const TUTORIAL_DATA: Record<string, TutorialData> = {
         }
     },
     rotate: {
-        title: "🔄 旋轉 (Rotation)",
-        explanation: `旋轉是將一個點繞原點 (0, 0) 旋轉特定角度。正角度表示逆時針旋轉，負角度表示順時針旋轉。<br><br>旋轉使用三角函數來計算新位置。`,
+        title: "🔄 旋轉 (Rotation) - 特殊角",
+        explanation: `旋轉是將一個點繞原點 (0, 0) 旋轉特定角度。正角度表示逆時針旋轉，負角度表示順時針旋轉。<br><br>這些特殊角度（90°、180°、-90°）可以用心算快速得出答案！`,
         formula: `(x, y) → (x·cos(θ) - y·sin(θ), x·sin(θ) + y·cos(θ))<br><br>特殊角度：<br>• 90°: (x, y) → (-y, x)<br>• 180°: (x, y) → (-x, -y)<br>• -90°: (x, y) → (y, -x)`,
         example: `<div class="example-step">將 $(3, 4)$ 旋轉 $90^\\circ$：</div>
                   <div class="example-step"><strong>步驟 1：</strong> 對於 $90^\\circ$ : $(x', y') = (-y, x)$</div>
@@ -120,6 +120,24 @@ export const TUTORIAL_DATA: Record<string, TutorialData> = {
             text: "將 (3, 0) 逆時針旋轉 90°",
             start: new Point(3, 0),
             params: [90],
+            gridRange: 5
+        }
+    },
+    rotate_hard: {
+        title: "🧮 旋轉 (Rotation) - 一般角",
+        explanation: `當旋轉角度不是 90° 的倍數時，我們需要使用三角函數計算。<br><br>這些角度（如 30°、45°、60°、120° 等）需要用到計算機來計算 sin 和 cos 的值。<br><br>公式：<strong>(x', y') = (x cosθ - y sinθ, x sinθ + y cosθ)</strong>`,
+        formula: `(x, y) → (x·cos(θ) - y·sin(θ), x·sin(θ) + y·cos(θ))<br><br>常用值：<br>• cos(30°) = √3/2 ≈ 0.866<br>• sin(30°) = 1/2 = 0.5<br>• cos(45°) = sin(45°) = √2/2 ≈ 0.707<br>• cos(60°) = 1/2 = 0.5<br>• sin(60°) = √3/2 ≈ 0.866`,
+        example: `<div class="example-step">將 $(4, 2)$ 旋轉 $60^\\circ$：</div>
+                  <div class="example-step"><strong>步驟 1：</strong> $\\cos(60^\\circ) = 0.5$, $\\sin(60^\\circ) = \\frac{\\sqrt{3}}{2} \\approx 0.866$</div>
+                  <div class="example-step"><strong>步驟 2：</strong> $x' = 4 \\times 0.5 - 2 \\times 0.866 = 2 - 1.732 = 0.268$</div>
+                  <div class="example-step"><strong>步驟 3：</strong> $y' = 4 \\times 0.866 + 2 \\times 0.5 = 3.464 + 1 = 4.464$</div>
+                  <div class="example-step"><strong>結果：</strong> $(x', y')=\\boxed{(0.27, 4.46)}$ （保留兩位小數）</div>`,
+        practice: TutorialGenerator.genRotateCoordinateHard,
+        demo: {
+            type: 'rotate',
+            text: "將 (3, 0) 逆時針旋轉 60°",
+            start: new Point(3, 0),
+            params: [60],
             gridRange: 5
         }
     },
@@ -235,7 +253,8 @@ export const TUTORIAL_DATA: Record<string, TutorialData> = {
 export const latexFormulas: Record<string, string> = {
     move: '\\begin{pmatrix}x\'\\\\y\'\\end{pmatrix}=\\begin{pmatrix}x+\\Delta x\\\\y+\\Delta y\\end{pmatrix}',
     scale: '\\begin{pmatrix}x\'\\\\y\'\\end{pmatrix}=k\\begin{pmatrix}x\\\\y\\end{pmatrix}=\\begin{pmatrix}kx\\\\ky\\end{pmatrix}',
-    rotate: '\\text{通式：}\\begin{pmatrix}x\'\\\\y\'\\end{pmatrix}=\\begin{pmatrix}\\cos\\theta&-\\sin\\theta\\\\\\sin\\theta&\\cos\\theta\\end{pmatrix}\\begin{pmatrix}x\\\\y\\end{pmatrix}=\\begin{pmatrix}x\\cos\\theta-y\\sin\\theta\\\\x\\sin\\theta+y\\cos\\theta\\end{pmatrix}\\newline\\newline\\text{特殊角：}\\newline90°:\\begin{pmatrix}x\\\\y\\end{pmatrix}=\\begin{pmatrix}-y\\\\x\\end{pmatrix},\\quad180°:\\begin{pmatrix}x\\\\y\\end{pmatrix}=\\begin{pmatrix}-x\\\\-y\\end{pmatrix},\\quad-90°:\\begin{pmatrix}x\\\\y\\end{pmatrix}=\\begin{pmatrix}y\\\\-x\\end{pmatrix}',
+    rotate: '\\text{特殊角：}\\newline90°:\\begin{pmatrix}x\\\\y\\end{pmatrix}=\\begin{pmatrix}-y\\\\x\\end{pmatrix},\\quad180°:\\begin{pmatrix}x\\\\y\\end{pmatrix}=\\begin{pmatrix}-x\\\\-y\\end{pmatrix},\\quad-90°:\\begin{pmatrix}x\\\\y\\end{pmatrix}=\\begin{pmatrix}y\\\\-x\\end{pmatrix}',
+    rotate_hard: '\\begin{pmatrix}x\'\\\\y\'\\end{pmatrix}=\\begin{pmatrix}\\cos\\theta&-\\sin\\theta\\\\\\sin\\theta&\\cos\\theta\\end{pmatrix}\\begin{pmatrix}x\\\\y\\end{pmatrix}=\\begin{pmatrix}x\\cos\\theta-y\\sin\\theta\\\\x\\sin\\theta+y\\cos\\theta\\end{pmatrix}\\newline\\newline\\text{常用三角函數值：}\\newline\\cos30°=\\frac{\\sqrt{3}}{2},\\ \\sin30°=\\frac{1}{2}\\newline\\cos45°=\\sin45°=\\frac{\\sqrt{2}}{2}\\newline\\cos60°=\\frac{1}{2},\\ \\sin60°=\\frac{\\sqrt{3}}{2}',
     reflect_x: '\\begin{pmatrix}x\'\\\\y\'\\end{pmatrix}=\\begin{pmatrix}0&-1\\\\1&0\\end{pmatrix}\\begin{pmatrix}x\\\\y\\end{pmatrix}=\\begin{pmatrix}x\\\\-y\\end{pmatrix}',
     reflect_y: '\\begin{pmatrix}x\'\\\\y\'\\end{pmatrix}=\\begin{pmatrix}0&1\\\\-1&0\\end{pmatrix}\\begin{pmatrix}x\\\\y\\end{pmatrix}=\\begin{pmatrix}-x\\\\y\\end{pmatrix}',
     rotate_point: '\\text{通式：}\\begin{pmatrix}x\'\\\\y\'\\end{pmatrix}=\\begin{pmatrix}\\cos\\theta&-\\sin\\theta\\\\\\sin\\theta&\\cos\\theta\\end{pmatrix}\\begin{pmatrix}x-x_0\\\\y-y_0\\end{pmatrix}+\\begin{pmatrix}x_0\\\\y_0\\end{pmatrix}',
@@ -244,14 +263,13 @@ export const latexFormulas: Record<string, string> = {
     reflect_line: '\\begin{pmatrix}x\'\\\\y\'\\end{pmatrix}=\\begin{pmatrix}x-2Au\\\\y-2Bu\\end{pmatrix},\\text{其中}u=\\frac{Ax_0+By_0+C}{A^2+B^2}'
 }
 
-
 export const lessons: Lesson[] = [
     { id: 'move', title: '平移 (Translation)', icon: '↔️', description: '將坐標移動 (Δx, Δy)', level: 'basic' },
     { id: 'scale', title: '縮放 (Scaling)', icon: '📏', description: '放大或縮小坐標', level: 'basic' },
-    { id: 'rotate', title: '旋轉 (Rotation)', icon: '🔄', description: '繞原點旋轉', level: 'basic' },
+    { id: 'rotate', title: '旋轉 - 特殊角', icon: '🔄', description: '90°、180°、-90°（可心算）', level: 'basic' },
     { id: 'reflect_x', title: 'X 軸反射', icon: '🪞', description: '沿 X 軸翻轉', level: 'basic' },
     { id: 'reflect_y', title: 'Y 軸反射', icon: '🪞', description: '沿 Y 軸翻轉', level: 'basic' },
-    { id: 'rotate_point', title: '繞點旋轉', icon: '🎯', description: '繞任意點旋轉', level: 'advanced' },
+    { id: 'rotate_hard', title: '旋轉 - 一般角', icon: '🧮', description: '30°、45°、60°等（需計算機）', level: 'advanced' },
     { id: 'reflect_45', title: 'y=x 直線反射', icon: '📐', description: '沿對角線反射', level: 'advanced' },
     { id: 'reflect_135', title: 'y=-x 直線反射', icon: '📐', description: '沿反對角線反射', level: 'advanced' },
     { id: 'reflect_line', title: '一般直線反射', icon: '✏️', description: '沿 Ax+By+C=0 反射', level: 'expert' }
