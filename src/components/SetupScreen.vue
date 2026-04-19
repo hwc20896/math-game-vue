@@ -18,8 +18,8 @@
         <input
             type="number"
             id="iteration-count"
-            min="1"
-            max="20"
+            min="2"
+            max="10"
             step="1"
             v-model.number="iterationCount"
             :class="{ 'input-error': errorMessage !== '' }"
@@ -80,15 +80,15 @@ const validateInput = () => {
   if (!Number.isInteger(iterationCount.value)){
     errorMessage.value = '變換次數必須是整數'
   }
-  else if (iterationCount.value < 1 || iterationCount.value > 20) {
-    errorMessage.value = '請輸入 1 到 20 之間的數字'
+  else if (iterationCount.value < 2 || iterationCount.value > 10) {
+    errorMessage.value = '請輸入 2 到 10 之間的數字'
   } else {
     errorMessage.value = ''
   }
 }
 
 const startGame = () => {
-  if (iterationCount.value < 1 || iterationCount.value > 20) {
+  if (iterationCount.value < 2 || iterationCount.value > 10) {
     alert('請輸入 1 到 20 之間的數字')
     return
   }

@@ -3,40 +3,40 @@ import {
     TransformResult,
     TransformUtils,
     VALID_ROTATE_ANGLES,
-    VALID_ROTATE_ANGLES_HARD
+    VALID_ROTATE_ANGLES_ALL
 } from "@/utils/transform-utils.ts";
 
 namespace detail_constant{
     export const MoveCoordinateParam: Record<number, number> = {  /* |range| < clamp */
         1: 10,
-        2: 30,
-        3: 50,
+        2: 20,
+        3: 40,
         4: 60
     }
 
     export const ScaleCoordinateParam: Record<number, {min: number, max: number}> = {
-        1: {min: 2, max: 5},
-        2: {min: 2, max: 10},
-        3: {min: 2, max: 20},
-        4: {min: -20, max: 20}
+        1: {min: 2, max: 3},
+        2: {min: 2, max: 5},
+        3: {min: 2, max: 10},
+        4: {min: -15, max: 15}
     }
 
     export const RotateCoordinateParam: Record<number, number[]> = {
         1: VALID_ROTATE_ANGLES,
-        2: VALID_ROTATE_ANGLES_HARD,
-        3: VALID_ROTATE_ANGLES_HARD,
-        4: VALID_ROTATE_ANGLES_HARD
+        2: VALID_ROTATE_ANGLES_ALL,
+        3: VALID_ROTATE_ANGLES_ALL,
+        4: VALID_ROTATE_ANGLES_ALL
     }
 
     //  ONLY APPEARS IN DIFFICULTY 3 AND 4
     export const RotateCoordinateByPointParam: Record<number, {origin_range: number, angle_list: number[]}> = {
-        3: {origin_range: 10, angle_list: VALID_ROTATE_ANGLES},
-        4: {origin_range: 10, angle_list: VALID_ROTATE_ANGLES_HARD}
+        3: {origin_range: 5, angle_list: VALID_ROTATE_ANGLES},
+        4: {origin_range: 10, angle_list: VALID_ROTATE_ANGLES_ALL}
     }
 
     //  ONLY APPEARS IN DIFFICULTY 4
     export const ReflectByLineParam: Record<number, number> = {
-        4: 10
+        4: 8
     }
 }
 
@@ -53,9 +53,14 @@ namespace QuestionGenerator{
     export function genScaleCoordinate(current: Point, difficulty: number): TransformResult{
         const RANGE = detail_constant.ScaleCoordinateParam[difficulty]
 
+        let scale: number
+        do {
+            scale = TransformUtils.randInt(RANGE.min, RANGE.max)
+        } while ([-1, 0, 1].includes(scale))
+
         return TransformUtils.scaleCoord(
             current,
-            TransformUtils.randInt(RANGE.min, RANGE.max)
+            scale
         )
     }
 
@@ -88,12 +93,12 @@ namespace QuestionGenerator{
         if (difficulty < 3)
             return genRotateCoordinate(current, difficulty)
 
-        const RANGE = detail_constant.RotateCoordinateByPointParam[difficulty]
+        const PARAM = detail_constant.RotateCoordinateByPointParam[difficulty]
 
         return TransformUtils.rotateCoordByPoint(
             current,
-            Point.randomRange(RANGE.origin_range, -RANGE.origin_range),
-            TransformUtils.choice(RANGE.angle_list)
+            Point.randomRange(PARAM.origin_range, -PARAM.origin_range),
+            TransformUtils.choice(PARAM.angle_list)
         )
     }
 
