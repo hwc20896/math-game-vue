@@ -23,44 +23,49 @@ interface Difficulty {
     }
 }
 
-type QuestionGeneratorType = (point: Point, difficulty: number) => TransformResult;
+export interface QuestionGeneratorType {
+    func: (current: Point, difficulty: number) => TransformResult
+    name: string
+}
 
 // 難度選項
 export const OPTIONS_DIFFICULTY: Record<number, QuestionGeneratorType[]> = {
     1: [
-        GameGenerator.genMoveCoordinate,
-        GameGenerator.genScaleCoordinate,
-        GameGenerator.genRotateCoordinate,
-        GameGenerator.genReflectXAxisCoordinate,
-        GameGenerator.genReflectYAxisCoordinate
+        {func: GameGenerator.genMoveCoordinate, name: 'genMoveCoordinate'},
+        {func: GameGenerator.genScaleCoordinate, name: 'genScaleCoordinate'},
+        {func: GameGenerator.genRotateCoordinate, name: 'genRotateCoordinate'},
+        {func: GameGenerator.genReflectXAxisCoordinate, name: 'genReflectXAxisCoordinate'},
+        {func: GameGenerator.genReflectYAxisCoordinate, name: 'genReflectYAxisCoordinate'}
     ],
     2: [
-        GameGenerator.genMoveCoordinate,
-        GameGenerator.genScaleCoordinate,
-        GameGenerator.genRotateCoordinate,
-        GameGenerator.genReflectXAxisCoordinate,
-        GameGenerator.genReflectYAxisCoordinate
+        {func: GameGenerator.genMoveCoordinate, name: 'genMoveCoordinate'},
+        {func: GameGenerator.genScaleCoordinate, name: 'genScaleCoordinate'},
+        {func: GameGenerator.genRotateCoordinate, name: 'genRotateCoordinate'},
+        {func: GameGenerator.genReflectXAxisCoordinate, name: 'genReflectXAxisCoordinate'},
+        {func: GameGenerator.genReflectYAxisCoordinate, name: 'genReflectYAxisCoordinate'},
+        {func: GameGenerator.genReflect45DegLineCoordinate, name: 'genReflect135DegLineCoordinate'},
+        {func: GameGenerator.genReflect135DegLineCoordinate, name: 'genReflect135DegLineCoordinate'}
     ],
     3: [
-        GameGenerator.genMoveCoordinate,
-        GameGenerator.genScaleCoordinate,
-        GameGenerator.genRotateCoordinate,
-        GameGenerator.genReflectXAxisCoordinate,
-        GameGenerator.genReflectYAxisCoordinate,
-        GameGenerator.genReflect135DegLineCoordinate,
-        GameGenerator.genReflect45DegLineCoordinate,
-        GameGenerator.genRotateCoordinateByPoint
+        {func: GameGenerator.genMoveCoordinate, name: 'genMoveCoordinate'},
+        {func: GameGenerator.genScaleCoordinate, name: 'genScaleCoordinate'},
+        {func: GameGenerator.genRotateCoordinate, name: 'genRotateCoordinate'},
+        {func: GameGenerator.genReflectXAxisCoordinate, name: 'genReflectXAxisCoordinate'},
+        {func: GameGenerator.genReflectYAxisCoordinate, name: 'genReflectYAxisCoordinate'},
+        {func: GameGenerator.genReflect135DegLineCoordinate, name: 'genReflect135DegLineCoordinate'},
+        {func: GameGenerator.genReflect45DegLineCoordinate, name: 'genReflect45DegLineCoordinate'},
+        {func: GameGenerator.genRotateCoordinateByPoint, name: 'genRotateCoordinateByPoint'}
     ],
     4: [
-        GameGenerator.genMoveCoordinate,
-        GameGenerator.genScaleCoordinate,
-        GameGenerator.genRotateCoordinate,
-        GameGenerator.genReflectXAxisCoordinate,
-        GameGenerator.genReflectYAxisCoordinate,
-        GameGenerator.genReflect135DegLineCoordinate,
-        GameGenerator.genReflect45DegLineCoordinate,
-        GameGenerator.genRotateCoordinateByPoint,
-        GameGenerator.genReflectByLineCoordinate
+        {func: GameGenerator.genMoveCoordinate, name: 'genMoveCoordinate'},
+        {func: GameGenerator.genScaleCoordinate, name: 'genScaleCoordinate'},
+        {func: GameGenerator.genRotateCoordinate, name: 'genRotateCoordinate'},
+        {func: GameGenerator.genReflectXAxisCoordinate, name: 'genReflectXAxisCoordinate'},
+        {func: GameGenerator.genReflectYAxisCoordinate, name: 'genReflectYAxisCoordinate'},
+        {func: GameGenerator.genReflect135DegLineCoordinate, name: 'genReflect135DegLineCoordinate'},
+        {func: GameGenerator.genReflect45DegLineCoordinate, name: 'genReflect45DegLineCoordinate'},
+        {func: GameGenerator.genRotateCoordinateByPoint, name: 'genRotateCoordinateByPoint'},
+        {func: GameGenerator.genReflectByLineCoordinate, name: 'genReflectByLineCoordinate'}
     ]
 }
 

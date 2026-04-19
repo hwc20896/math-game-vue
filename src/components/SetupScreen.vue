@@ -36,7 +36,7 @@
 <script setup lang="ts">
 import {ref, inject, watch, computed} from 'vue'
 import { TransformUtils, TransformResult } from '@/utils/transform-utils'
-import { difficultyLevel, OPTIONS_DIFFICULTY } from "@/utils/constants.ts";
+import { difficultyLevel, OPTIONS_DIFFICULTY, type QuestionGeneratorType } from "@/utils/constants.ts";
 import { Point } from '@/utils/point.ts'
 
 interface GameData {
@@ -100,10 +100,10 @@ const startGame = () => {
 
   const options = OPTIONS_DIFFICULTY[difficulty.value]
   let currentFunction: string | null = null
-  const PROHIBIT_CONTINUOUS_FUNCTION = ['reflectByXAxis', 'reflectByYAxis', 'reflectBy45DegLine', 'reflectBy135DegLine']
+  const PROHIBIT_CONTINUOUS_FUNCTION = ['genReflectXAxisCoordinate', 'genReflectYAxisCoordinate', 'genReflect135DegLineCoordinate', 'genReflect45DegLineCoordinate']
 
   for (let i = 0; i < iterationCount.value; i++) {
-    let target
+    let target: QuestionGeneratorType
 
     do {
       target = TransformUtils.choice(options)
@@ -120,9 +120,8 @@ const startGame = () => {
 
     const currentPoint = new Point(current.x, current.y)
 
-    const result: TransformResult = target(currentPoint, difficulty.value)
+    const result: TransformResult = target.func(currentPoint, difficulty.value)
 
-    console.log(`Attempt ${i+1}: Result = ${result.point.toString()}`)
     current.x = TransformUtils.roundToDecimal(result.point.x, 2)
     current.y = TransformUtils.roundToDecimal(result.point.y, 2)
     transformations.push(result.description)
