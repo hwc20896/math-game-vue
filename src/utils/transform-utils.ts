@@ -1,4 +1,11 @@
 import {Point, Line} from '@/utils/point.ts';
+import type {TutorialPracticeGeneratorType} from '@/utils/tutorial-generator.ts';
+
+export const VALID_ROTATE_ANGLES = [-90, 90, 180];
+export const VALID_ROTATE_ANGLES_HARD = [
+    -150, -135, -120, -90, -60, -45, -30,
+    30, 45, 60, 90, 120, 135, 150, 180
+];
 
 export interface TransformResult {
     point: Point;

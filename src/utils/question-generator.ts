@@ -1,16 +1,12 @@
 import {Point, Line} from '@/utils/point.ts'
 import {
     TransformResult,
-    TransformUtils
+    TransformUtils,
+    VALID_ROTATE_ANGLES,
+    VALID_ROTATE_ANGLES_HARD
 } from "@/utils/transform-utils.ts";
 
 namespace detail_constant{
-    export const VALID_ROTATE_ANGLES = [-90, 90, 180];
-    export const VALID_ROTATE_ANGLES_HARD = [
-        -150, -135, -120, -90, -60, -45, -30,
-        30, 45, 60, 90, 120, 135, 150, 180
-    ];
-
     export const MoveCoordinateParam: Record<number, number> = {  /* |range| < clamp */
         1: 10,
         2: 30,
