@@ -104,15 +104,12 @@ const startGame = () => {
 
   for (let i = 0; i < iterationCount.value; i++) {
     let target
-    let attempts = 0
 
     do {
       target = TransformUtils.choice(options)
-      attempts++
     } while (
-      currentFunction === target.func.name &&
-      PROHIBIT_CONTINUOUS_FUNCTION.includes(target.func.name) &&
-      attempts < 10
+      currentFunction === target.name &&
+      PROHIBIT_CONTINUOUS_FUNCTION.includes(target.name)
     )
 
     if (PROHIBIT_CONTINUOUS_FUNCTION.includes(target.func.name)) {
