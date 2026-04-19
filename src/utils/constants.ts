@@ -272,8 +272,22 @@ export const lessons: Lesson[] = [
     { id: 'rotate_hard', title: '旋轉 - 一般角', icon: '🧮', description: '30°、45°、60°等（需計算機）', level: 'advanced' },
     { id: 'reflect_45', title: 'y=x 直線反射', icon: '📐', description: '沿對角線反射', level: 'advanced' },
     { id: 'reflect_135', title: 'y=-x 直線反射', icon: '📐', description: '沿反對角線反射', level: 'advanced' },
+    { id: 'rotate_point', title: '繞點旋轉', icon: '🎯', description: '繞任意點旋轉', level: 'advanced' },
     { id: 'reflect_line', title: '一般直線反射', icon: '✏️', description: '沿 Ax+By+C=0 反射', level: 'expert' }
 ]
+
+export const LESSON_DIFFICULTY_MAP: Record<string, number[]> = {
+    move: [1, 2, 3, 4],
+    scale: [1, 2, 3, 4],
+    rotate: [1, 2, 3, 4],  // Special angles appear in all levels
+    reflect_x: [1, 2, 3, 4],
+    reflect_y: [1, 2, 3, 4],
+    rotate_hard: [2, 3, 4],  // General angles start from level 2
+    reflect_45: [2, 3, 4],
+    reflect_135: [2, 3, 4],
+    rotate_point: [3, 4],
+    reflect_line: [4]
+}
 
 export const difficultyLevel: Record<number, Difficulty> = {
     1: {

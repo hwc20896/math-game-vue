@@ -12,9 +12,20 @@
           <div class="lesson-icon">{{ lesson.icon }}</div>
           <h3>{{ lesson.title }}</h3>
           <p>{{ lesson.description }}</p>
-          <span v-if="lesson.level !== 'basic'" class="advanced-badge">
-            {{ getLevelText(lesson.level) }}
-          </span>
+          <div class="lesson-footer">
+            <span v-if="lesson.level !== 'basic'" class="advanced-badge">
+              {{ getLevelText(lesson.level) }}
+            </span>
+            <div class="difficulty-tags">
+              <span
+                  v-for="level in getDifficultyLevels(lesson.id)"
+                  :key="level"
+                  :class="['difficulty-tag', `level-${level}`]"
+              >
+                {{ level }}
+              </span>
+            </div>
+          </div>
         </button>
       </div>
       <button class="btn btn-back" @click="backToMain">← 返回選單</button>
@@ -25,7 +36,7 @@
 <script setup lang="ts">
 import { inject } from 'vue'
 
-import {lessons} from "@/utils/constants.ts";
+import {lessons, LESSON_DIFFICULTY_MAP} from "@/utils/constants.ts";
 
 const navigateTo = inject<(screen: string) => void>('navigateTo')
 const emit = defineEmits<{
@@ -38,6 +49,10 @@ const getLevelText = (level: string): string => {
     expert: '專家'
   }
   return texts[level] || ''
+}
+
+const getDifficultyLevels = (lessonId: string): number[] => {
+  return LESSON_DIFFICULTY_MAP[lessonId] || []
 }
 
 const selectLesson = (lessonId: string) => {
@@ -126,6 +141,45 @@ const backToMain = () => {
   font-size: 0.75rem;
   margin-top: 10px;
   font-weight: bold;
+}
+
+.difficulty-tags {
+  display: flex;
+  gap: 5px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.difficulty-tag {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  font-size: 0.75rem;
+  font-weight: bold;
+  color: white;
+  margin-top: 0.5rem;
+}
+
+.difficulty-tag.level-1 {
+  background: linear-gradient(135deg, #C3E2C6, #D5E9C0);
+  color: #333;
+}
+
+.difficulty-tag.level-2 {
+  background: linear-gradient(135deg, #FFF3E0, #FFE6C7);
+  color: #333;
+}
+
+.difficulty-tag.level-3 {
+  background: linear-gradient(135deg, #FFE3E3, #FFC9C9);
+  color: #333;
+}
+
+.difficulty-tag.level-4 {
+  background: linear-gradient(135deg, #3B1E1E, #1A0E0E);
 }
 
 .btn-back {

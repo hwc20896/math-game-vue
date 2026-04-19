@@ -4,6 +4,16 @@
       <div class="tutorial-header">
         <button class="btn btn-small btn-back" @click="backToLessons">← 返回課程列表</button>
         <h2 id="tutorial-title">{{ tutorialData?.title }}</h2>
+        <div class="difficulty-indicator" v-if="currentDifficultyLevels.length > 0">
+          <span class="difficulty-label">出現於：</span>
+          <span
+              v-for="level in currentDifficultyLevels"
+              :key="level"
+              :class="['difficulty-badge', `level-${level}`]"
+          >
+            {{ getDifficultyLabel(level) }}
+          </span>
+        </div>
       </div>
 
       <div class="tutorial-body">
@@ -71,7 +81,7 @@
 <script setup lang="ts">
 import { ref, computed, onMounted, inject, watch } from 'vue'
 import KatexFormula from './KatexFormula.vue'
-import {latexFormulas, TUTORIAL_DATA} from "@/utils/constants.ts";
+import {latexFormulas, TUTORIAL_DATA, LESSON_DIFFICULTY_MAP} from "@/utils/constants.ts";
 import {CanvaDrawing} from '@/utils/canva-drawing';
 import katex from 'katex'
 import {Point, Line} from '@/utils/point.ts'
@@ -90,6 +100,21 @@ const showFeedback = ref(false)
 const feedbackIsCorrect = ref(false)
 const feedbackMessage = ref('')
 let tutorialAnimation: number | null = null
+
+const currentDifficultyLevels = computed(() => {
+  if (!props.lessonId) return []
+  return LESSON_DIFFICULTY_MAP[props.lessonId] || []
+})
+
+const getDifficultyLabel = (level: number): string => {
+  const labels: Record<number, string> = {
+    1: '基礎',
+    2: '進階',
+    3: '困難',
+    4: '地獄'
+  }
+  return labels[level] || `${level}`
+}
 
 const currentPractice = ref<TutorialPracticeType | null>(null)
 
@@ -214,8 +239,6 @@ const drawFrame = (frame: number) => {
     }
   }
 
-  console.log(`Current is ${current.toString()}`)
-
   CanvaDrawing.detail.drawPoint(ctx, canvasRef.value, start, '#667eea', 'Start', range)
   CanvaDrawing.detail.drawPoint(ctx, canvasRef.value, current, '#43e97b', 'Current', range, new Point(10, -25))
 
@@ -308,6 +331,49 @@ onMounted(() => {
   flex: 1;
   color: #333;
   font-size: 1.8rem;
+}
+
+.difficulty-indicator {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.difficulty-label {
+  font-size: 0.9rem;
+  color: #666;
+  font-weight: bold;
+}
+
+.difficulty-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px 12px;
+  border-radius: 12px;
+  font-size: 0.8rem;
+  font-weight: bold;
+  color: white;
+}
+
+.difficulty-badge.level-1 {
+  background: linear-gradient(135deg, #C3E2C6, #D5E9C0);
+  color: #333;
+}
+
+.difficulty-badge.level-2 {
+  background: linear-gradient(135deg, #FFF3E0, #FFE6C7);
+  color: #333;
+}
+
+.difficulty-badge.level-3 {
+  background: linear-gradient(135deg, #FFE3E3, #FFC9C9);
+  color: #333;
+}
+
+.difficulty-badge.level-4 {
+  background: linear-gradient(135deg, #3B1E1E, #1A0E0E);
 }
 
 .btn {
