@@ -112,21 +112,15 @@ const startGame = () => {
       PROHIBIT_CONTINUOUS_FUNCTION.includes(target.name)
     )
 
-    if (PROHIBIT_CONTINUOUS_FUNCTION.includes(target.func.name)) {
-      currentFunction = target.func.name
+    if (PROHIBIT_CONTINUOUS_FUNCTION.includes(target.name)) {
+      currentFunction = target.name
     } else {
       currentFunction = null
     }
 
-    let result: TransformResult
     const currentPoint = new Point(current.x, current.y)
 
-    if (target.argGen === null) {
-      result = target.func(currentPoint)
-    } else {
-      const args = target.argGen()
-      result = target.func(currentPoint, ...args)
-    }
+    const result: TransformResult = target(currentPoint, difficulty.value)
 
     console.log(`Attempt ${i+1}: Result = ${result.point.toString()}`)
     current.x = TransformUtils.roundToDecimal(result.point.x, 2)

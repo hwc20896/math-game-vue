@@ -1,5 +1,6 @@
-import {type TutorialData, TransformUtils, type TransformOption} from "@/utils/transform-utils.ts";
+import {type TutorialData, TransformResult} from "@/utils/transform-utils.ts";
 import {Line, Point} from "@/utils/point.ts";
+import Generator from "./question-generator.ts"
 
 interface Lesson {
     id: string
@@ -20,69 +21,46 @@ interface Difficulty {
     }
 }
 
-export const VALID_ROTATE_ANGLES = [-90, 90, 180];
-export const VALID_ROTATE_ANGLES_HARD = [
-    -150, -135, -120, -90, -60, -45, -30,
-    30, 45, 60, 90, 120, 135, 150, 180
-];
-
-
-function getValidRotateAngles(difficulty: number = 1): number[] {
-    return difficulty >= 2 ? VALID_ROTATE_ANGLES_HARD : VALID_ROTATE_ANGLES;
-}
-
-const {
-    moveCoord,
-    scaleCoord,
-    rotateCoord,
-    reflectByXAxis,
-    reflectByYAxis,
-    rotateCoordByPoint,
-    reflectBy45DegLine,
-    reflectBy135DegLine,
-    reflectByLine,
-    choice,
-    randInt
-} = TransformUtils;
+type QuestionGeneratorType = (point: Point, difficulty: number) => TransformResult;
 
 // 難度選項
-export const OPTIONS_DIFFICULTY: Record<number, TransformOption[]> = {
+export const OPTIONS_DIFFICULTY: Record<number, QuestionGeneratorType[]> = {
     1: [
-        { func: moveCoord, argGen: () => [Point.randomRange(10, -10)] },
-        { func: scaleCoord, argGen: () => [randInt(2, 5)] },
-        { func: rotateCoord, argGen: () => [choice(getValidRotateAngles(1))] },
-        { func: reflectByXAxis, argGen: null },
-        { func: reflectByYAxis, argGen: null }
+        Generator.genMoveCoordinate,
+        Generator.genScaleCoordinate,
+        Generator.genRotateCoordinate,
+        Generator.genReflectXAxisCoordinate,
+        Generator.genReflectYAxisCoordinate
     ],
     2: [
-        { func: moveCoord, argGen: () => [Point.randomRange(30, -30)] },
-        { func: scaleCoord, argGen: () => [randInt(2, 10)] },
-        { func: rotateCoord, argGen: () => [choice(getValidRotateAngles(2))] },
-        { func: reflectByXAxis, argGen: null },
-        { func: reflectByYAxis, argGen: null }
+        Generator.genMoveCoordinate,
+        Generator.genScaleCoordinate,
+        Generator.genRotateCoordinate,
+        Generator.genReflectXAxisCoordinate,
+        Generator.genReflectYAxisCoordinate
     ],
     3: [
-        { func: moveCoord, argGen: () => [Point.randomRange(50, -50)] },
-        { func: scaleCoord, argGen: () => [randInt(2, 20)] },
-        { func: rotateCoord, argGen: () => [choice(getValidRotateAngles(2))] },
-        { func: reflectByXAxis, argGen: null },
-        { func: reflectByYAxis, argGen: null },
-        { func: rotateCoordByPoint, argGen: () => [Point.randomRange(10, -10), choice(getValidRotateAngles(1))] },
-        { func: reflectBy45DegLine, argGen: null },
-        { func: reflectBy135DegLine, argGen: null }
+        Generator.genMoveCoordinate,
+        Generator.genScaleCoordinate,
+        Generator.genRotateCoordinate,
+        Generator.genReflectXAxisCoordinate,
+        Generator.genReflectYAxisCoordinate,
+        Generator.genReflect135DegLineCoordinate,
+        Generator.genReflect45DegLineCoordinate,
+        Generator.genRotateCoordinateByPoint
     ],
     4: [
-        { func: moveCoord, argGen: () => [Point.random(60, -60)] },
-        { func: scaleCoord, argGen: () => [randInt(-20, 20)] },
-        { func: rotateCoord, argGen: () => [choice(getValidRotateAngles(2))] },
-        { func: reflectByXAxis, argGen: null },
-        { func: reflectByYAxis, argGen: null },
-        { func: rotateCoordByPoint, argGen: () => [Point.randomRange(10, -10), choice(getValidRotateAngles(2))] },
-        { func: reflectBy45DegLine, argGen: null },
-        { func: reflectBy135DegLine, argGen: null },
-        { func: reflectByLine, argGen: () => [Line.randomRange(10, -10)] }
+        Generator.genMoveCoordinate,
+        Generator.genScaleCoordinate,
+        Generator.genRotateCoordinate,
+        Generator.genReflectXAxisCoordinate,
+        Generator.genReflectYAxisCoordinate,
+        Generator.genReflect135DegLineCoordinate,
+        Generator.genReflect45DegLineCoordinate,
+        Generator.genRotateCoordinateByPoint,
+        Generator.genReflectByLineCoordinate
     ]
-};
+}
 
 export const TUTORIAL_DATA: Record<string, TutorialData> = {
     move: {
