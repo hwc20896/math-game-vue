@@ -107,7 +107,25 @@ export const TUTORIAL_DATA: Record<string, TutorialData> = {
     },
     rotate: {
         title: "🔄 旋轉 (Rotation) - 特殊角",
-        explanation: `旋轉是將一個點繞原點 (0, 0) 旋轉特定角度。正角度表示逆時針旋轉，負角度表示順時針旋轉。<br><br>這些特殊角度（90°、180°、-90°）可以用心算快速得出答案！`,
+        explanation: `旋轉是將一個點繞原點 (0, 0) 旋轉特定角度。正角度表示逆時針旋轉，負角度表示順時針旋轉。<br><br>
+                      <strong>💡 這裏專注練習特殊角旋轉（90°、180°），使用「兩步直覺法」：</strong><br><br>
+                      
+                      <strong>步驟 1：判斷是否交換 x, y</strong><br>
+                      • <strong>90° / -90°</strong>：<strong>交換</strong> x 和 y → <code>(y, x)</code><br>
+                      • <strong>180°</strong>：<strong>不交換</strong> x 和 y → <code>(x, y)</code><br><br>
+
+                      <strong>步驟 2：判斷新坐標的正負號（看象限）</strong><br>
+                      想像點旋轉後落在哪個象限，該象限的符號就是答案的符號。<br>
+                      • <strong>第一象限</strong> (+, +) &nbsp; • <strong>第二象限</strong> (-, +)<br>
+                      • <strong>第三象限</strong> (-, -) &nbsp; • <strong>第四象限</strong> (+, -)<br>
+                      <span style="color: #e74c3c;">• <strong>軸上特例</strong>：若點在軸上，旋轉 90° 會跳到另一條軸（0 的位置不變）。</span><br><br>
+
+                      <strong>舉例 A（一般點）：</strong> 點 <code>(3, 4)</code> [第一象限]<br>
+                      • <strong>旋轉 90°</strong>：1. 交換 → <code>(4, 3)</code>；2. 落到第二象限 (-, +) → <strong><code>(-4, 3)</code></strong><br><br>
+
+                      <strong>舉例 B（軸上點）：</strong> 點 <code>(5, 0)</code> [x 軸正向]<br>
+                      • <strong>旋轉 90°</strong>：1. 交換 → <code>(0, 5)</code>；2. 落到 y 軸正向 → <strong><code>(0, 5)</code></strong><br>
+                      • <strong>旋轉 -90°</strong>：1. 交換 → <code>(0, 5)</code>；2. 落到 y 軸負向 → <strong><code>(0, -5)</code></strong>`,
         formula: `(x, y) → (x·cos(θ) - y·sin(θ), x·sin(θ) + y·cos(θ))<br><br>特殊角度：<br>• 90°: (x, y) → (-y, x)<br>• 180°: (x, y) → (-x, -y)<br>• -90°: (x, y) → (y, -x)`,
         example: `<div class="example-step">將 $(3, 4)$ 旋轉 $90^\\circ$：</div>
                   <div class="example-step"><strong>步驟 1：</strong> 對於 $90^\\circ$ : $(x', y') = (-y, x)$</div>
