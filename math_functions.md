@@ -10,7 +10,9 @@
 #### 向量運算： $\left(\Delta x,\Delta y\right)$
 
 $$
-\begin{pmatrix}x\\\ y\end{pmatrix} \longleftarrow \begin{pmatrix}x\\\ y\end{pmatrix}+\begin{pmatrix}\Delta x\\\ \Delta y\end{pmatrix}=\begin{pmatrix}x+\Delta x\\\ y+\Delta y\end{pmatrix}
+\begin{pmatrix}x\\\ y\end{pmatrix} 
+\longleftarrow \begin{pmatrix}x\\\ y\end{pmatrix}+\begin{pmatrix}\Delta x\\\ \Delta y\end{pmatrix}
+=\boxed{\begin{pmatrix}x+\Delta x\\\ y+\Delta y\end{pmatrix}}
 $$
 
 #### 複數運算： $\Delta x+\Delta y\cdot i$
@@ -24,7 +26,9 @@ $$
 #### 向量運算：
 
 $$
-\begin{pmatrix}x\\\ y\end{pmatrix} \longleftarrow \lambda\begin{pmatrix}x\\\ y\end{pmatrix} = \begin{pmatrix}\lambda x\\\ \lambda y\end{pmatrix}
+\begin{pmatrix}x\\\ y\end{pmatrix} 
+\longleftarrow \lambda\begin{pmatrix}x\\\ y\end{pmatrix} 
+= \boxed{\begin{pmatrix}\lambda x\\\ \lambda y\end{pmatrix}}
 $$
 
 #### 複數運算：
@@ -42,7 +46,7 @@ $$
 =\begin{pmatrix}r\cos\varphi\\\ r\sin\varphi\end{pmatrix}
 \longleftarrow\begin{pmatrix}r\cos(\varphi+\theta)\\\ r\sin(\varphi+\theta)\end{pmatrix}
 =\begin{pmatrix}r\cos\varphi\cos\theta-r\sin\varphi\sin\theta\\\ r\sin\varphi\cos\theta+r\cos\varphi\sin\theta\end{pmatrix}
-=\begin{pmatrix}x\cos\theta-y\sin\theta\\\ y\cos\theta+x\sin\theta\end{pmatrix}
+=\boxed{\begin{pmatrix}x\cos\theta-y\sin\theta\\\ y\cos\theta+x\sin\theta\end{pmatrix}}
 =\begin{pmatrix}\cos\theta&-\sin\theta\\\ \sin\theta&\cos\theta\end{pmatrix}\begin{pmatrix}x\\\ y\end{pmatrix}
 $$
 
@@ -64,14 +68,14 @@ $$
 ### $x$ 軸反射： （ $\longrightarrow$ 通式：_以任意直線反射_）
 
 $$
-\begin{pmatrix}x\\\ y\end{pmatrix}\longleftarrow\begin{pmatrix}x\\\ -y\end{pmatrix}
+\begin{pmatrix}x\\\ y\end{pmatrix}\longleftarrow\boxed{\begin{pmatrix}x\\\ -y\end{pmatrix}}
 =\begin{pmatrix}1&0\\\ 0&-1\end{pmatrix}\begin{pmatrix}x\\\ y\end{pmatrix}
 $$
 
 ### $y$ 軸反射： （ $\longrightarrow$ 通式：_以任意直線反射_）
 
 $$
-\begin{pmatrix}x\\\ y\end{pmatrix}\longleftarrow\begin{pmatrix}-x\\\ y\end{pmatrix}
+\begin{pmatrix}x\\\ y\end{pmatrix}\longleftarrow\boxed{\begin{pmatrix}-x\\\ y\end{pmatrix}}
 =\begin{pmatrix}-1&0\\\ 0&1\end{pmatrix}\begin{pmatrix}x\\\ y\end{pmatrix}
 $$
 
@@ -87,7 +91,7 @@ $$
 &\longleftarrow \begin{pmatrix}r\cos\left(\varphi+\theta\right) \\\ r\sin\left(\varphi+\theta\right)\end{pmatrix}+\begin{pmatrix}a\\\ b\end{pmatrix}\\
 &=\begin{pmatrix}r\cos\varphi\cos\theta-r\sin\varphi\sin\theta \\\ r\sin\varphi\cos\theta+r\cos\varphi\sin\theta\end{pmatrix}+\begin{pmatrix}a\\\ b\end{pmatrix}\\
 &=\begin{pmatrix}(x-a)\cos\theta-(y-b)\sin\theta\\\ (y-b)\cos\theta+(x-a)\sin\theta\end{pmatrix}+\begin{pmatrix}a\\\ b\end{pmatrix}\\
-&=\begin{pmatrix}(x-a)\cos\theta-(y-b)\sin\theta+a\\\ (y-b)\cos\theta+(x-a)\sin\theta+b\end{pmatrix}\\
+&=\boxed{\begin{pmatrix}(x-a)\cos\theta-(y-b)\sin\theta+a\\\ (y-b)\cos\theta+(x-a)\sin\theta+b\end{pmatrix}}\\
 &=\begin{pmatrix}\cos\theta&-\sin\theta\\\ \sin\theta&\cos\theta\end{pmatrix}\begin{pmatrix}x-a\\\ y-b\end{pmatrix}+\begin{pmatrix}a\\\ b\end{pmatrix}
 \end{align}
 $$
@@ -106,14 +110,14 @@ $$
 ### 以 $y=x$ 反射：（ $\longrightarrow$ 通式：_以任意直線反射_）
 
 $$
-\begin{pmatrix}x\\\ y\end{pmatrix}\longleftarrow\begin{pmatrix}y\\\ x\end{pmatrix}
+\begin{pmatrix}x\\\ y\end{pmatrix}\longleftarrow\boxed{\begin{pmatrix}y\\\ x\end{pmatrix}}
 =\begin{pmatrix}0&1\\\ 1&0\end{pmatrix}\begin{pmatrix}x\\\ y\end{pmatrix}
 $$
 
 ### 以 $y=-x$ 反射：（ $\longrightarrow$ 通式：_以任意直線反射_）
 
 $$
-\begin{pmatrix}x\\\ y\end{pmatrix}\longleftarrow\begin{pmatrix}-y\\\ -x\end{pmatrix}
+\begin{pmatrix}x\\\ y\end{pmatrix}\longleftarrow\boxed{\begin{pmatrix}-y\\\ -x\end{pmatrix}}
 =\begin{pmatrix}0&-1\\\ -1&0\end{pmatrix}\begin{pmatrix}x\\\ y\end{pmatrix}
 $$
 
@@ -122,7 +126,7 @@ $$
 $$
 \begin{align}
 \begin{pmatrix}x\\\ y\end{pmatrix}
-\longleftarrow\begin{pmatrix}x-2A\cdot\frac{Ax+By+C}{A^2+B^2}\\\ y-2B\cdot\frac{Ax+By+C}{A^2+B^2}\end{pmatrix}
+\longleftarrow\boxed{\begin{pmatrix}x-2A\cdot\frac{Ax+By+C}{A^2+B^2}\\\ y-2B\cdot\frac{Ax+By+C}{A^2+B^2}\end{pmatrix}}
 =\begin{pmatrix}x\\\ y\end{pmatrix}-2\cdot\frac{Ax+By+C}{A^2+B^2}\begin{pmatrix}A\\\ B\end{pmatrix}
 \end{align}
 $$
