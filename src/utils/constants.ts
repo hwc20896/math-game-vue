@@ -1,6 +1,8 @@
 import {type TutorialData, TransformResult} from "@/utils/transform-utils.ts";
 import {Line, Point} from "@/utils/point.ts";
-import Generator from "./question-generator.ts"
+
+import GameGenerator from "@/utils/question-generator.ts"
+import TutorialGenerator from "@/utils/tutorial-generator.ts"
 
 interface Lesson {
     id: string
@@ -26,39 +28,39 @@ type QuestionGeneratorType = (point: Point, difficulty: number) => TransformResu
 // 難度選項
 export const OPTIONS_DIFFICULTY: Record<number, QuestionGeneratorType[]> = {
     1: [
-        Generator.genMoveCoordinate,
-        Generator.genScaleCoordinate,
-        Generator.genRotateCoordinate,
-        Generator.genReflectXAxisCoordinate,
-        Generator.genReflectYAxisCoordinate
+        GameGenerator.genMoveCoordinate,
+        GameGenerator.genScaleCoordinate,
+        GameGenerator.genRotateCoordinate,
+        GameGenerator.genReflectXAxisCoordinate,
+        GameGenerator.genReflectYAxisCoordinate
     ],
     2: [
-        Generator.genMoveCoordinate,
-        Generator.genScaleCoordinate,
-        Generator.genRotateCoordinate,
-        Generator.genReflectXAxisCoordinate,
-        Generator.genReflectYAxisCoordinate
+        GameGenerator.genMoveCoordinate,
+        GameGenerator.genScaleCoordinate,
+        GameGenerator.genRotateCoordinate,
+        GameGenerator.genReflectXAxisCoordinate,
+        GameGenerator.genReflectYAxisCoordinate
     ],
     3: [
-        Generator.genMoveCoordinate,
-        Generator.genScaleCoordinate,
-        Generator.genRotateCoordinate,
-        Generator.genReflectXAxisCoordinate,
-        Generator.genReflectYAxisCoordinate,
-        Generator.genReflect135DegLineCoordinate,
-        Generator.genReflect45DegLineCoordinate,
-        Generator.genRotateCoordinateByPoint
+        GameGenerator.genMoveCoordinate,
+        GameGenerator.genScaleCoordinate,
+        GameGenerator.genRotateCoordinate,
+        GameGenerator.genReflectXAxisCoordinate,
+        GameGenerator.genReflectYAxisCoordinate,
+        GameGenerator.genReflect135DegLineCoordinate,
+        GameGenerator.genReflect45DegLineCoordinate,
+        GameGenerator.genRotateCoordinateByPoint
     ],
     4: [
-        Generator.genMoveCoordinate,
-        Generator.genScaleCoordinate,
-        Generator.genRotateCoordinate,
-        Generator.genReflectXAxisCoordinate,
-        Generator.genReflectYAxisCoordinate,
-        Generator.genReflect135DegLineCoordinate,
-        Generator.genReflect45DegLineCoordinate,
-        Generator.genRotateCoordinateByPoint,
-        Generator.genReflectByLineCoordinate
+        GameGenerator.genMoveCoordinate,
+        GameGenerator.genScaleCoordinate,
+        GameGenerator.genRotateCoordinate,
+        GameGenerator.genReflectXAxisCoordinate,
+        GameGenerator.genReflectYAxisCoordinate,
+        GameGenerator.genReflect135DegLineCoordinate,
+        GameGenerator.genReflect45DegLineCoordinate,
+        GameGenerator.genRotateCoordinateByPoint,
+        GameGenerator.genReflectByLineCoordinate
     ]
 }
 
@@ -71,10 +73,7 @@ export const TUTORIAL_DATA: Record<string, TutorialData> = {
                   <div class="example-step"><strong>步驟 1：</strong> $x' = 2 + 4 = 6$<strong></div>
                   <div class="example-step"><strong>步驟 2：</strong> $y' = 3 + (-1) = 2$</div>
                   <div class="example-step"><strong>結果：</strong> $(x', y')=\\boxed{(6, 2)}$</div>`,
-        practice: {
-            question: "將點 (3, 5) 平移 (2, -3)。新的坐標是什麼？",
-            answer: new Point(5, 2)
-        },
+        practice: TutorialGenerator.genMoveCoordinate,
         demo: {
             type: 'move',
             text: "從 (2, 2) 平移 (3, 2)",
@@ -92,10 +91,7 @@ export const TUTORIAL_DATA: Record<string, TutorialData> = {
                   <div class="example-step"><strong>步驟 2：</strong> $x' = 4 \\times 3 = 12$</div>
                   <div class="example-step"><strong>步驟 3：</strong> $y' = 3 \\times 3 = 9$</div>
                   <div class="example-step"><strong>結果：</strong> $(x', y')=\\boxed{(12, 9)}$</div>`,
-        practice: {
-            question: "將點 (5, 2) 放大至原來的 4 倍。新的坐標是什麼？",
-            answer: new Point(20, 8)
-        },
+        practice: TutorialGenerator.genScaleCoordinate,
         demo: {
             type: 'scale',
             text: "從 (2, 1.5) 放大 2 倍",
@@ -113,10 +109,7 @@ export const TUTORIAL_DATA: Record<string, TutorialData> = {
                   <div class="example-step"><strong>步驟 2：</strong> $x' = -4$</div>
                   <div class="example-step"><strong>步驟 3：</strong> $y' = 3$</div>
                   <div class="example-step"><strong>結果：</strong> $(x', y')=\\boxed{(-4, 3)}$</div>`,
-        practice: {
-            question: "將點 (4, 3) 逆時針旋轉 90°。新的坐標是什麼？",
-            answer: new Point(-3, 4)
-        },
+        practice: TutorialGenerator.genRotateCoordinate,
         demo: {
             type: 'rotate',
             text: "將 (3, 0) 逆時針旋轉 90°",
@@ -133,10 +126,7 @@ export const TUTORIAL_DATA: Record<string, TutorialData> = {
                   <div class="example-step"><strong>步驟 1：</strong> 保持 $x$ 不變：$x' = 2$</div>
                   <div class="example-step"><strong>步驟 2：</strong> 將 $y$ 取反：$y = -(4) = -4$</div>
                   <div class="example-step"><strong>結果：</strong> $(x',y')=\\boxed{(2, -4)}$</div>`,
-        practice: {
-            question: "將點 (-3, 5) 沿 X 軸反射。新的坐標是什麼？",
-            answer: new Point(-3, -5)
-        },
+        practice: TutorialGenerator.genReflectXAxisCoordinate,
         demo: {
             type: 'reflect',
             text: "將 (3, 2) 沿 x 軸反射",
@@ -153,10 +143,7 @@ export const TUTORIAL_DATA: Record<string, TutorialData> = {
                   <div class="example-step"><strong>步驟 1：</strong> 將 $x$ 取反：$x' = -3$</div>
                   <div class="example-step"><strong>步驟 2：</strong> 保持 $y$ 不變：$y' = 4$</div>
                   <div class="example-step"><strong>結果：</strong> $(x',y')=\\boxed{(-3, 4)}$</div>`,
-        practice: {
-            question: "將點 (4, -2) 沿 Y 軸反射。新的坐標是什麼？",
-            answer: new Point(-4, -2)
-        },
+        practice: TutorialGenerator.genReflectYAxisCoordinate,
         demo: {
             type: 'reflect',
             text: "將 (2, 3) 沿 y 軸反射",
@@ -174,10 +161,7 @@ export const TUTORIAL_DATA: Record<string, TutorialData> = {
                   <div class="example-step"><strong>步驟 2：</strong> 旋轉 90°: $(-2, 3)$</div>
                   <div class="example-step"><strong>步驟 3：</strong> 平移回來：$(-2+2, 3+1) = (0, 4)$</div>
                   <div class="example-step"><strong>結果：</strong> $(x', y')=\\boxed{(0, 4)}$</div>`,
-        practice: {
-            question: "將點 (4, 2) 繞 (1, 1) 旋轉 90°。新的坐標是什麼？",
-            answer: new Point(0, 4)
-        },
+        practice: TutorialGenerator.genRotateByPointCoordinate,
         demo: {
             type: 'rotate_point',
             text: "將 (3, 2) 繞 (1, 1) 逆時針旋轉 120°",
@@ -194,10 +178,7 @@ export const TUTORIAL_DATA: Record<string, TutorialData> = {
                   <div class="example-step"><strong>步驟 1：</strong> 交換 $x$ 和 $y$</div>
                   <div class="example-step"><strong>步驟 2：</strong> $x' = 7$, $y' = 2$</div>
                   <div class="example-step"><strong>結果：</strong> $(x', y')=\\boxed{(7, 2)}$</div>`,
-        practice: {
-            question: "將點 (5, -3) 沿直線 y=x 反射。新的坐標是什麼？",
-            answer: new Point(-3, 5)
-        },
+        practice: TutorialGenerator.genReflect45DegLineCoordinate,
         demo: {
             type: 'reflect_line',
             text: "將 (3, 1) 沿 y=x 反射",
@@ -215,10 +196,7 @@ export const TUTORIAL_DATA: Record<string, TutorialData> = {
                   <div class="example-step"><strong>步驟 2：</strong> $x' = -(-2) = 2$</div>
                   <div class="example-step"><strong>步驟 3：</strong> $y' = -4$</div>
                   <div class="example-step"><strong>結果：</strong> $(x', y')=\\boxed{(2, -4)}$</div>`,
-        practice: {
-            question: "將點 (-3, 4) 沿直線 y=-x 反射。新的坐標是什麼？",
-            answer: new Point(4, -3)
-        },
+        practice: TutorialGenerator.genReflect135DegLineCoordinate,
         demo: {
             type: 'reflect_line',
             text: "將 (2, 3) 沿 y=-x 反射",
@@ -238,10 +216,7 @@ export const TUTORIAL_DATA: Record<string, TutorialData> = {
                   <div class="example-step"><strong>步驟 5：</strong> $x' = 2 - 2(1)\\frac{4}{2} = -2$</div>
                   <div class="example-step"><strong>步驟 6：</strong> $y' = 3 - 2(1)\\frac{4}{2} = -1$</div>
                   <div class="example-step"><strong>結果：</strong> $(x',y')=\\boxed{(-2, -1)}$</div>`,
-        practice: {
-            question: "將點 (1, 1) 沿直線 x+y=0（即 x+y+0=0）反射。新的坐標是什麼？",
-            answer: new Point(-1, -1)
-        },
+        practice: TutorialGenerator.genReflectLineCoordinate,
         demo: {
             type: 'reflect_line',
             text: "將 (2, 1) 沿 4x-2y-1=0 反射",

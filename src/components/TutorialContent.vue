@@ -48,7 +48,10 @@
         <div class="tutorial-section">
           <h3>✏️ 練習題</h3>
           <div class="practice-box">
-            <p class="practice-question">{{ tutorialData?.practice.question }}</p>
+            <div class="practice-header">
+              <p class="practice-question">{{ `${currentPractice?.question}新的坐標是什麼？` }}</p>
+              <button class="btn btn-refresh" @click="refreshPractice" title="換一題">🔄 換一題</button>
+            </div>
             <input
                 type="text"
                 v-model="practiceAnswer"
@@ -66,13 +69,14 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted, inject } from 'vue'
+import { ref, computed, onMounted, inject, watch } from 'vue'
 import KatexFormula from './KatexFormula.vue'
 import {latexFormulas, TUTORIAL_DATA} from "@/utils/constants.ts";
 import {CanvaDrawing} from '@/utils/canva-drawing';
 import katex from 'katex'
 import {Point, Line} from '@/utils/point.ts'
 import {TransformUtils} from "@/utils/transform-utils.ts";
+import type {TutorialPracticeType} from "@/utils/tutorial-generator.ts";
 
 const navigateTo = inject<(screen: string) => void>('navigateTo')
 
@@ -87,11 +91,29 @@ const feedbackIsCorrect = ref(false)
 const feedbackMessage = ref('')
 let tutorialAnimation: number | null = null
 
+const currentPractice = ref<TutorialPracticeType | null>(null)
+
 const tutorialData = computed(() => {
   const id = props.lessonId
   if (!id) return null
   return TUTORIAL_DATA[id]
 })
+
+const generatePractice = () => {
+  if (tutorialData.value?.practice) {
+    currentPractice.value = tutorialData.value.practice()
+    practiceAnswer.value = ''
+    showFeedback.value = false
+    feedbackIsCorrect.value = false
+    feedbackMessage.value = ''
+  }
+}
+
+watch(() => props.lessonId, (newId) => {
+  if (newId) {
+    generatePractice()
+  }
+}, { immediate: true })
 
 const currentFormula = computed(() => {
   if (!tutorialData.value) return ''
@@ -232,7 +254,7 @@ const resetDemo = () => {
 }
 
 const checkPracticeAnswer = () => {
-  if (!tutorialData.value) return
+  if (!currentPractice.value) return
 
   const match = practiceAnswer.value.trim().match(/\(\s*(-?\d+(\.\d+)?)\s*,\s*(-?\d+(\.\d+)?)\s*\)/)
 
@@ -243,7 +265,7 @@ const checkPracticeAnswer = () => {
 
   const userX = parseFloat(match[1])
   const userY = parseFloat(match[3])
-  const correct = tutorialData.value.practice.answer
+  const correct = currentPractice.value.answer
 
   const isCorrect = TransformUtils.isCorrect(correct, new Point(userX, userY))
 
@@ -252,6 +274,10 @@ const checkPracticeAnswer = () => {
   feedbackMessage.value = isCorrect
       ? '✅ 正確！做得好！'
       : `❌ 不太對。正確答案是 ${correct.toString()}`
+}
+
+const refreshPractice = () => {
+  generatePractice()
 }
 
 const backToLessons = () => {
@@ -446,11 +472,41 @@ canvas {
   border-radius: 12px;
 }
 
+.practice-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 15px;
+  margin-bottom: 15px;
+}
+
 .practice-question {
   font-size: 1.1rem;
   margin-bottom: 15px;
   color: #333;
   font-weight: bold;
+}
+
+.btn-refresh {
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  color: white;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  white-space: nowrap;
+}
+
+.btn-refresh:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+}
+
+.btn-refresh:active {
+  transform: translateY(0);
 }
 
 input[type="text"] {

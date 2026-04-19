@@ -38,10 +38,7 @@ export interface TutorialData {
     explanation: string;
     formula: string;
     example: string;
-    practice: {
-        question: string;
-        answer: Point;
-    };
+    practice: TutorialPracticeGeneratorType;
     demo: DemoData;
 }
 
