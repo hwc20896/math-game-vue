@@ -280,4 +280,25 @@ export namespace CanvaDrawing{
 
         return current
     }
+
+
+    export function drawText(
+        ctx: CanvasRenderingContext2D,
+        text: string,
+        color: string,
+        location: Point,
+        size_px: number = 14
+    ): void{
+        ctx.fillStyle = color
+        ctx.font = `${size_px}px Arial`
+        ctx.fillText(text, location.x, location.y)
+    }
+
+    export function drawCurrentCoordinate(
+        ctx: CanvasRenderingContext2D,
+        currentPoint: Point,
+        textLocation: Point
+    ): void{
+        drawText(ctx, `目前坐標：${currentPoint.toFixedString(2)}`, '#333', textLocation)
+    }
 }

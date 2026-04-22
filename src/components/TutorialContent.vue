@@ -242,9 +242,7 @@ const drawFrame = (frame: number) => {
   CanvaDrawing.detail.drawPoint(ctx, canvasRef.value, start, '#667eea', 'Start', range)
   CanvaDrawing.detail.drawPoint(ctx, canvasRef.value, current, '#43e97b', 'Current', range, new Point(10, -25))
 
-  ctx.fillStyle = '#333'
-  ctx.font = '14px Arial'
-  ctx.fillText(`(${current.x.toFixed(2)}, ${current.y.toFixed(2)})`, 10, 20)
+  CanvaDrawing.drawCurrentCoordinate(ctx, current, new Point(10, 20))
 }
 
 const playDemo = () => {
