@@ -59,7 +59,7 @@ export class Point{
      * @param origin - The center of rotation (default: origin at (0, 0))
      * @returns A new rotated Point
      */
-    rotateByDegrees(angle: number, origin: Point = new Point(0, 0)){
+    rotateByDegrees(angle: number, origin: Point = Point.GLOBAL_ORIGIN){
         return this.rotate(angle * Math.PI / 180, origin);
     }
 
@@ -115,6 +115,8 @@ export class Point{
     static fromAngle(angleRadians: number, radius: number = 1){
         return new Point(radius * Math.cos(angleRadians), radius * Math.sin(angleRadians))
     }
+
+    static readonly GLOBAL_ORIGIN = new Point(0, 0)
 }
 
 export class Line{
@@ -198,6 +200,10 @@ export class Line{
      */
     get isValid(): boolean {
         return this.A !== 0 || this.B !== 0;
+    }
+
+    onLine(point: Point): boolean {
+        return this.A * point.x + this.B * point.y + this.C === 0;
     }
 
     /**
