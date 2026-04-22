@@ -123,17 +123,13 @@ export class Line{
     public C: number
 
     constructor(A: number, B: number, C: number) {
-        if (A < 0){
-            A *= -1
-            B *= -1
-            C *= -1
-        }
+        let gcdAll = A < 0? -1: 1
 
         const gcd = (a: number, b: number): number => {
             return b === 0? a : gcd(b, a%b);
         }
 
-        const gcdAll = gcd(A, gcd(B, C))
+        gcdAll *= gcd(Math.abs(A), gcd(Math.abs(B), Math.abs(C)))
 
         this.A = A / gcdAll
         this.B = B / gcdAll
@@ -149,12 +145,16 @@ export class Line{
         if (this.A == 1) result = "x";
         else if (this.A != 0) result = `${this.A}x`;
 
-        if (this.A != 0){
+        if (this.A != 0 && this.B != 0){
             result += this.B < 0? " - " : " + "
         }
 
         if (this.B != 0){
-            result += `${Math.abs(this.B)}y`;
+            const abs_val = Math.abs(this.B)
+            if (abs_val == 1)
+                result += 'y'
+            else
+                result += `${abs_val}y`
         }
 
         if (this.C != 0) {
