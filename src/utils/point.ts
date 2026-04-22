@@ -81,6 +81,10 @@ export class Point{
         )
     }
 
+    toFixedString(digits: number): string{
+        return `(${this.x.toFixed(digits)}, ${this.y.toFixed(digits)})`;
+    }
+
     /**
      * Generates a random point within specified bounds.
      * @param xMax - Maximum x coordinate
