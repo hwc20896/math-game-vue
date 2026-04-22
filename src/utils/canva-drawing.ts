@@ -41,8 +41,8 @@ export namespace CanvaDrawing{
         ctx.stroke()
 
         ctx.fillStyle = '#333'
-        ctx.font = '12px Arial'
-        ctx.fillText('0', centerX - 10, centerY + 15)
+        ctx.font = '15px Arial'
+        ctx.fillText('O', centerX - 15, centerY + 15)
     }
 
     export namespace detail {
