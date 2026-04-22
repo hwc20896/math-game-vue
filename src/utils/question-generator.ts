@@ -44,15 +44,31 @@ namespace QuestionGenerator{
     export function genMoveCoordinate(current: Point, difficulty: number): TransformResult{
         const RANGE = detail_constant.MoveCoordinateParam[difficulty]
 
+        let move: Point
+
+        /*  Chance of getting a move (0,0):
+         *  - Lvl 1: 0.82%
+         *  - Lvl 2: 0.23%
+         *  - Lvl 3: 0.06%
+         *  - Lvl 4: 0.03%
+         */
+        do{
+            move = Point.randomRange(RANGE, -RANGE)
+        } while (move.equals(Point.GLOBAL_ORIGIN))
+
         return TransformUtils.moveCoord(
             current,
-            Point.randomRange(RANGE, -RANGE)
+            move
         )
     }
 
     export function genScaleCoordinate(current: Point, difficulty: number): TransformResult{
         const RANGE = detail_constant.ScaleCoordinateParam[difficulty]
 
+        /*  Chance of getting a scale 0 (paradise) / 1 (not move at all) / -1(identical to rotate 180°):
+         *  - Lvl 1, 2, 3: 0%    (not in a valid range)
+         *  - Lvl 4:       9.68%
+         */
         let scale: number
         do {
             scale = TransformUtils.randInt(RANGE.min, RANGE.max)
@@ -67,6 +83,7 @@ namespace QuestionGenerator{
     export function genRotateCoordinate(current: Point, difficulty: number): TransformResult{
         const ANGLE_LIST = detail_constant.RotateCoordinateParam[difficulty]
 
+        //  Does not break at all, as rotating 0° isn't even in the list
         return TransformUtils.rotateCoord(
             current,
             TransformUtils.choice(ANGLE_LIST)
@@ -74,18 +91,22 @@ namespace QuestionGenerator{
     }
 
     export function genReflectXAxisCoordinate(current: Point, _difficulty?: number): TransformResult{
+        //  Breaks if current point is on x-axis (having y=0) but, there's nothing I can do.
         return TransformUtils.reflectByXAxis(current)
     }
 
     export function genReflectYAxisCoordinate(current: Point, _difficulty?: number): TransformResult{
+        //  Breaks if current point is on y-axis (having x=0) but, there's nothing I can do.
         return TransformUtils.reflectByYAxis(current)
     }
 
     export function genReflect45DegLineCoordinate(current: Point, _difficulty?: number): TransformResult{
+        //  Breaks if current point is on y=x but, there's nothing I can do.
         return TransformUtils.reflectBy45DegLine(current)
     }
 
     export function genReflect135DegLineCoordinate(current: Point, _difficulty?: number): TransformResult{
+        //  Breaks if current point is on y=-x but, there's nothing I can do.
         return TransformUtils.reflectBy135DegLine(current)
     }
 
@@ -95,9 +116,19 @@ namespace QuestionGenerator{
 
         const PARAM = detail_constant.RotateCoordinateByPointParam[difficulty]
 
+        let origin: Point
+
+        /* Chance of getting origin (0,0):
+         * - Lvl 3: 0.82%
+         * - Lvl 4: 0.23%
+         */
+        do {
+            origin = Point.randomRange(PARAM.origin_range, -PARAM.origin_range)
+        } while (origin.equals(current) || origin.equals(Point.GLOBAL_ORIGIN))
+
         return TransformUtils.rotateCoordByPoint(
             current,
-            Point.randomRange(PARAM.origin_range, -PARAM.origin_range),
+            origin,
             TransformUtils.choice(PARAM.angle_list)
         )
     }
@@ -105,9 +136,22 @@ namespace QuestionGenerator{
     export function genReflectByLineCoordinate(current: Point, difficulty: number): TransformResult{
         const RANGE = detail_constant.ReflectByLineParam[difficulty]
 
+        let line: Line
+
+        /* Chances of getting an invalid or overlapping line
+        *  (!line.isvalid OR C=0 with either A=0 or B=0)
+        *  - Lvl 4: 1.00%
+        * */
+        do {
+            line = Line.randomRange(RANGE, -RANGE)
+        } while (
+            !line.isValid ||
+            (line.C == 0 && (line.A == 0 || line.B == 0))  //  overlaps with x=0 or y=0
+        )
+
         return TransformUtils.reflectByLine(
             current,
-            Line.randomRange(RANGE, -RANGE)
+            line
         )
     }
 }

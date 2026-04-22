@@ -12,7 +12,11 @@ export type TutorialPracticeGeneratorType = () => TutorialPracticeType;
 namespace TutorialGenerator{
     export function genMoveCoordinate(): TutorialPracticeType{
         const start = Point.randomRange(10, -10)
-        const delta= Point.randomRange(10, -10)
+
+        let delta: Point
+        do {
+            delta = Point.randomRange(10, -10)
+        } while (delta.equals(Point.GLOBAL_ORIGIN))
 
         return {
             question: `將點 ${start.toString()} 平移 ${delta.toString()}。`,
@@ -52,7 +56,13 @@ namespace TutorialGenerator{
 
     export function genRotateByPointCoordinate(): TutorialPracticeType{
         const start = Point.randomRange(10, -10)
-        const origin = Point.randomRange(10, -10)
+
+        let origin: Point
+
+        do{
+            origin = Point.randomRange(10, -10)
+        } while (origin.equals(start) || origin.equals(Point.GLOBAL_ORIGIN))
+
         const angle = TransformUtils.choice(VALID_ROTATE_ANGLES)
 
         return {
@@ -62,7 +72,11 @@ namespace TutorialGenerator{
     }
 
     export function genReflectXAxisCoordinate(): TutorialPracticeType{
-        const start = Point.randomRange(10, -10)
+        let start: Point
+
+        do{
+            start = Point.randomRange(10, -10)
+        } while (start.y == 0)
 
         return {
             question: `將點 ${start.toString()} 對 x 軸 反射。`,
@@ -71,8 +85,11 @@ namespace TutorialGenerator{
     }
 
     export function genReflectYAxisCoordinate(): TutorialPracticeType{
-        const start = Point.randomRange(10, -10)
+        let start: Point
 
+        do{
+            start = Point.randomRange(10, -10)
+        } while (start.x == 0)
         return {
             question: `將點 ${start.toString()} 對 y 軸 反射。`,
             answer: start.reflect(new Line(0, 1, 0))
@@ -81,7 +98,11 @@ namespace TutorialGenerator{
 
     export function genReflect45DegLineCoordinate(): TutorialPracticeType{
         //  y = x
-        const start = Point.randomRange(10, -10)
+        let start: Point
+
+        do{
+            start = Point.randomRange(10, -10)
+        } while (start.y == start.x)
 
         return {
             question: `將點 ${start.toString()} 對直線 y = x 反射。`,
@@ -91,7 +112,11 @@ namespace TutorialGenerator{
 
     export function genReflect135DegLineCoordinate(): TutorialPracticeType{
         //  y = -x
-        const start = Point.randomRange(10, -10)
+        let start: Point
+
+        do{
+            start = Point.randomRange(10, -10)
+        } while (start.y == -start.x)
 
         return {
             question: `將點 ${start.toString()} 對直線 y = -x 反射。`,
@@ -105,7 +130,7 @@ namespace TutorialGenerator{
 
         do {
             line = Line.randomRange(10, -10)
-        } while (!line.isValid)
+        } while (!line.isValid || line.onLine(start))
 
         return {
             question: `將點 ${start.toString()} 對直線 ${line.toString()} 反射。`,
