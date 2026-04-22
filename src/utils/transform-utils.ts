@@ -118,7 +118,7 @@ export namespace TransformUtils {
     export function rotateCoord(current: Point, angleDegrees: number): TransformResult {
         return {
             point: current.rotateByDegrees(angleDegrees),
-            description: `旋轉 ${angleDegrees}°`
+            description: `繞原點旋轉 ${angleDegrees}°`
         }
     }
 
