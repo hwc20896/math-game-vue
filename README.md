@@ -163,7 +163,7 @@ __A-02__
 
 針對此事，開發人員針對此類反射變換進行了兩次修改，確保該反射變換不會連續出現兩次。
 
-![solution1git.png](README-Assets/solution1git.png)
+![solution1-code.png](README-Assets/solution1-code.png)
 
 另外有測試人員在測試地獄難度時，運氣好抽到了個含「縮放 0 倍」的題目，直接從地獄直上天堂。
 
